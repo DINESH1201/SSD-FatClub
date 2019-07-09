@@ -42,10 +42,39 @@ namespace FatClub
             services.AddDbContext<FatClubContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("FatClubContext")));
 
-            services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
-       .AddDefaultUI(UIFramework.Bootstrap4)
-        .AddEntityFrameworkStores<FatClubContext>()
-        .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddEntityFrameworkStores<FatClubContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddMvc()
+            .AddRazorPagesOptions(options =>
+            {
+                // options.Conventions.AllowAnonymousToFolder("/Movies");
+                options.Conventions.AuthorizePage("/Food/Create");
+                options.Conventions.AuthorizeAreaPage("Identity", "/Manage/Accounts");
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 1;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+
 
         }
 
@@ -65,6 +94,7 @@ namespace FatClub
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthentication();
             app.UseCookiePolicy();
 

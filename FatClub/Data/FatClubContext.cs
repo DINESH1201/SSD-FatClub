@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace FatClub.Models
 {
-    public class FatClubContext : IdentityDbContext<ApplicationUser>
+    public class FatClubContext : IdentityDbContext<ApplicationUser, ApplicationRole,string>
     {
         public FatClubContext (DbContextOptions<FatClubContext> options)
             : base(options)
