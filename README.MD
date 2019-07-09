@@ -1,13 +1,16 @@
 Models to Do for Product:
 
-<Food Establishment>
+<Food Establishment> (Authentication)
+-> Username
+-> Password
 -> Business Name
 -> Food Category e.g. Thai/Western
 -> <Food Options>
 -> Location
 
-<Customer>
--> Name
+<Customer> (Authentication)
+-> Username
+-> Password
 -> Mobile Number
 -> Email
 -> Card Number
