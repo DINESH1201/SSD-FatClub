@@ -50,8 +50,8 @@ namespace FatClub
             services.AddMvc()
             .AddRazorPagesOptions(options =>
             {
-                // options.Conventions.AllowAnonymousToFolder("/Movies");
-                options.Conventions.AuthorizePage("/Food/Create");
+                //options.Conventions.AllowAnonymousToFolder("/Foods");
+                options.Conventions.AuthorizePage("/Foods/Create");
                 options.Conventions.AuthorizeAreaPage("Identity", "/Manage/Accounts");
             });
 

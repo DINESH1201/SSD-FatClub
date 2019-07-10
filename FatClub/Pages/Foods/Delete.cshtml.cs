@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Foods
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
