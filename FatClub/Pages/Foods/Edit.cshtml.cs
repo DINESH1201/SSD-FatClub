@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Foods
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
