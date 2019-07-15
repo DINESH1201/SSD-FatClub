@@ -15,7 +15,7 @@ namespace FatClub.Pages.Roles
         {
             _roleManager = roleManager;
         }
-
+       
         public List<ApplicationRole> ApplicationRole { get; set; }
 
         public async Task OnGetAsync()
