@@ -6,6 +6,10 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>Note:</strong> Please verify your email by clicking the link in the email sent before you can login
+</div>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -50,8 +54,29 @@
 </div>
 
 <style>
-    h4{
+    .alert {
+        padding: 20px;
+        background-color: #f44336;
+        color: white;
         text-align:center;
+    }
+
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .closebtn:hover {
+            color: black;
+        }
+    h4{
+        text-align:center;  
     }
     .row {
         margin-top: 5em;

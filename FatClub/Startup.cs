@@ -13,7 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
-
+using Microsoft.AspNetCore.Identity.UI.Services;
+using FatClub.Services;
 
 namespace FatClub
 {
@@ -36,16 +37,31 @@ namespace FatClub
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //email confirmation
+            services.AddIdentityCore<IdentityUser>(config =>
+            {
+                config.SignIn.RequireConfirmedEmail = true;
+            });
+
+            
+
+            // requires
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            // using WebPWrecover.Services;
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
+
             services.AddDbContext<FatClubContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("FatClubContext")));
+            options.UseSqlServer(Configuration.GetConnectionString("FatClubContext")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<FatClubContext>()
-                    .AddDefaultTokenProviders();
+            .AddDefaultUI(UIFramework.Bootstrap4)
+            .AddEntityFrameworkStores<FatClubContext>()
+            .AddDefaultTokenProviders();
 
             services.AddMvc()
             .AddRazorPagesOptions(options =>
