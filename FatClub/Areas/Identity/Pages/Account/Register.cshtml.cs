@@ -20,17 +20,24 @@ namespace FatClub.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly FatClub.Models.FatClubContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            FatClub.Models.FatClubContext context,
+            RoleManager<ApplicationRole> roleManager
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -98,6 +105,14 @@ namespace FatClub.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    string selectedrolename = "User";
+                    ApplicationRole AppRole = await _roleManager.FindByNameAsync(selectedrolename);
+
+                    IdentityResult roleResult = await _userManager.AddToRoleAsync(user, AppRole.Name);
+                    if (roleResult.Succeeded)
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
