@@ -100,7 +100,7 @@ namespace FatClub.Areas.Identity.Pages.Account
                   
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);                                                     Prevent newly registered users from being automatically signed       
-                    //return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {
