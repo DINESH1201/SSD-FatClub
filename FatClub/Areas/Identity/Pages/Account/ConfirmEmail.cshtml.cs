@@ -34,6 +34,12 @@ namespace FatClub.Areas.Identity.Pages.Account
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+            if (roleResult.Succeeded)
+            {
+                 return Page();
+            }
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");

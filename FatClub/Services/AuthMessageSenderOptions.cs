@@ -7,8 +7,8 @@ namespace FatClub.Services
 {
     public class AuthMessageSenderOptions
     {
-        public string SendGridUser { get; set; }
-        public string SendGridKey { get; set; }
+        public string SendGridUser = "rizkidelta"; //{ get; set; }
+        public string SendGridKey = "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"; //{ get; set; }
     }
 }
     
