@@ -18,11 +18,13 @@ namespace FatClub.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, FatClub.Models.FatClubContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -78,8 +80,27 @@ namespace FatClub.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    var auditrecord = new AuditLog();
+                    auditrecord.AuditActionType = "User Login";
+                    auditrecord.DateTimeStamp = DateTime.Now;
+                    auditrecord.foodIDField = 0;
+                    //auditrecord.Username = Input.Email;
+                    auditrecord.Username = User.Identity.Name.ToString();
+                    _context.AuditLogs.Add(auditrecord);
+                    await _context.SaveChangesAsync();
                     return LocalRedirect(returnUrl);
                 }
+                else
+                {
+                    var auditrecord = new AuditLog();
+                    auditrecord.AuditActionType = "Failed Login";
+                    auditrecord.DateTimeStamp = DateTime.Now;
+                    auditrecord.foodIDField = 0;
+                    auditrecord.Username = Input.Email;
+                    _context.AuditLogs.Add(auditrecord);
+                    await _context.SaveChangesAsync();
+                }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
@@ -87,6 +108,14 @@ namespace FatClub.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
+                    var auditrecord = new AuditLog();
+                    auditrecord.AuditActionType = "Account locked out";
+                    auditrecord.DateTimeStamp = DateTime.Now;
+                    auditrecord.foodIDField = 0;
+                    auditrecord.Username = Input.Email;
+                    _context.AuditLogs.Add(auditrecord);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToPage("./Lockout");
                 }
                 else

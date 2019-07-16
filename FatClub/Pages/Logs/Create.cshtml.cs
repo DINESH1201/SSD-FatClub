@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FatClub.Models;
-using Microsoft.AspNetCore.Authorization;
 
-namespace FatClub.Pages.Foods
+namespace FatClub.Pages.Logs
 {
-    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -26,7 +24,7 @@ namespace FatClub.Pages.Foods
         }
 
         [BindProperty]
-        public Food Food { get; set; }
+        public AuditLog AuditLog { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,23 +33,8 @@ namespace FatClub.Pages.Foods
                 return Page();
             }
 
-            _context.Food.Add(Food);
-
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                var auditrecord = new AuditLog();
-                auditrecord.AuditActionType = "Add Food";
-                auditrecord.DateTimeStamp = DateTime.Now;
-                auditrecord.foodIDField = Food.ID;
-                var userID = User.Identity.Name.ToString();
-                auditrecord.Username = userID;
-
-                _context.AuditLogs.Add(auditrecord);
-                await _context.SaveChangesAsync();
-            }
-
-
-           // await _context.SaveChangesAsync();
+            _context.AuditLogs.Add(AuditLog);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

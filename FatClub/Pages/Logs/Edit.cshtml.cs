@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
-using Microsoft.AspNetCore.Authorization;
 
-namespace FatClub.Pages.Foods
+namespace FatClub.Pages.Logs
 {
-    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -22,7 +20,7 @@ namespace FatClub.Pages.Foods
         }
 
         [BindProperty]
-        public Food Food { get; set; }
+        public AuditLog AuditLog { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,9 +29,9 @@ namespace FatClub.Pages.Foods
                 return NotFound();
             }
 
-            Food = await _context.Food.FirstOrDefaultAsync(m => m.ID == id);
+            AuditLog = await _context.AuditLogs.FirstOrDefaultAsync(m => m.Audit_ID == id);
 
-            if (Food == null)
+            if (AuditLog == null)
             {
                 return NotFound();
             }
@@ -47,27 +45,15 @@ namespace FatClub.Pages.Foods
                 return Page();
             }
 
-            _context.Attach(Food).State = EntityState.Modified;
+            _context.Attach(AuditLog).State = EntityState.Modified;
 
             try
             {
-                if (await _context.SaveChangesAsync() > 0)
-                {
-                    var auditrecord = new AuditLog();
-                    auditrecord.AuditActionType = "Edit Food";
-                    auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.foodIDField = Food.ID;
-                    var userID = User.Identity.Name.ToString();
-                    auditrecord.Username = userID;
-
-                    _context.AuditLogs.Add(auditrecord);
-                    await _context.SaveChangesAsync();
-                }
-//                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FoodExists(Food.ID))
+                if (!AuditLogExists(AuditLog.Audit_ID))
                 {
                     return NotFound();
                 }
@@ -80,9 +66,9 @@ namespace FatClub.Pages.Foods
             return RedirectToPage("./Index");
         }
 
-        private bool FoodExists(int id)
+        private bool AuditLogExists(int id)
         {
-            return _context.Food.Any(e => e.ID == id);
+            return _context.AuditLogs.Any(e => e.Audit_ID == id);
         }
     }
 }

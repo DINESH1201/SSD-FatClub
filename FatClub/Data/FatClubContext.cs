@@ -24,5 +24,6 @@ namespace FatClub.Models
 
 
         public DbSet<FatClub.Models.Food> Food { get; set; }
+        public DbSet<FatClub.Models.AuditLog> AuditLogs { get; set; }
     }
 }

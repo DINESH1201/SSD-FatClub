@@ -6,6 +6,11 @@
     <UserSecretsId>1146fb7c-026a-45f6-be2f-1081c4700325</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190716165005_AddAuddit.cs" />
+    <Compile Remove="Migrations\20190716165005_AddAuddit.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AntiXSS" Version="4.3.0" />

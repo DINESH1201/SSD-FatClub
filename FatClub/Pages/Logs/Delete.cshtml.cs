@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
-using Microsoft.AspNetCore.Authorization;
 
-namespace FatClub.Pages.Foods
+namespace FatClub.Pages.Logs
 {
-    [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -21,7 +19,7 @@ namespace FatClub.Pages.Foods
         }
 
         [BindProperty]
-        public Food Food { get; set; }
+        public AuditLog AuditLog { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +28,9 @@ namespace FatClub.Pages.Foods
                 return NotFound();
             }
 
-            Food = await _context.Food.FirstOrDefaultAsync(m => m.ID == id);
+            AuditLog = await _context.AuditLogs.FirstOrDefaultAsync(m => m.Audit_ID == id);
 
-            if (Food == null)
+            if (AuditLog == null)
             {
                 return NotFound();
             }
@@ -46,24 +44,12 @@ namespace FatClub.Pages.Foods
                 return NotFound();
             }
 
-            Food = await _context.Food.FindAsync(id);
+            AuditLog = await _context.AuditLogs.FindAsync(id);
 
-            if (Food != null)
+            if (AuditLog != null)
             {
-                _context.Food.Remove(Food);
-                if (await _context.SaveChangesAsync() > 0)
-                {
-                    var auditrecord = new AuditLog();
-                    auditrecord.AuditActionType = "Delete Food";
-                    auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.foodIDField = Food.ID;
-                    var userID = User.Identity.Name.ToString();
-                    auditrecord.Username = userID;
-
-                    _context.AuditLogs.Add(auditrecord);
-                    await _context.SaveChangesAsync();
-                }
-                //await _context.SaveChangesAsync();
+                _context.AuditLogs.Remove(AuditLog);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
