@@ -56,7 +56,8 @@ namespace FatClub.Pages.Foods
                     var auditrecord = new AuditLog();
                     auditrecord.AuditActionType = "Edit Food";
                     auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.foodIDField = Food.ID;
+                    auditrecord.FoodIDField = Food.ID;
+                    auditrecord.Description = String.Format("");
                     var userID = User.Identity.Name.ToString();
                     auditrecord.Username = userID;
 

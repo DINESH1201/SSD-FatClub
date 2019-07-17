@@ -10,10 +10,13 @@ namespace FatClub.Pages.Roles
     public class CreateModel : PageModel
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public CreateModel(RoleManager<ApplicationRole> roleManager)
+        public CreateModel(RoleManager<ApplicationRole> roleManager,
+            FatClub.Models.FatClubContext context)
         {
             _roleManager = roleManager;
+            _context = context;
         }
 
         public IActionResult OnGet()
@@ -33,6 +36,16 @@ namespace FatClub.Pages.Roles
 
             ApplicationRole.CreatedDate = DateTime.UtcNow;
             ApplicationRole.IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "New Role Created";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.FoodIDField = 0;
+            auditrecord.Description = String.Format("");
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
+            await _context.SaveChangesAsync();
 
             IdentityResult roleRuslt = await _roleManager.CreateAsync(ApplicationRole);
 

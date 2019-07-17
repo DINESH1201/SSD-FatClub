@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FatClub.Models;
+using System;
 
 namespace FatClub.Pages.Roles
 {
@@ -10,10 +11,13 @@ namespace FatClub.Pages.Roles
     public class DeleteModel : PageModel
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public DeleteModel(RoleManager<ApplicationRole> roleManager)
+        public DeleteModel(RoleManager<ApplicationRole> roleManager,
+            FatClub.Models.FatClubContext context)
         {
             _roleManager = roleManager;
+            _context = context;
         }
 
         [BindProperty]
@@ -44,7 +48,15 @@ namespace FatClub.Pages.Roles
 
             ApplicationRole = await _roleManager.FindByIdAsync(id);
             IdentityResult roleRuslt = await _roleManager.DeleteAsync(ApplicationRole);
-
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Role Deleted";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.FoodIDField = 0;
+            auditrecord.Description = String.Format("");
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
 
         }

@@ -24,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.AuditLog[0].DateTimeStamp)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AuditLog[0].foodIDField)
+                @Html.DisplayNameFor(model => model.AuditLog[0].FoodIDField)
             </th>
             <th></th>
         </tr>
@@ -42,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.DateTimeStamp)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.foodIDField)
+                @Html.DisplayFor(modelItem => item.FoodIDField)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Audit_ID">Edit</a> |

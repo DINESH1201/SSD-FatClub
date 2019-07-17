@@ -20,17 +20,20 @@ namespace FatClub.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly FatClub.Models.FatClubContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            FatClub.Models.FatClubContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -98,6 +101,14 @@ namespace FatClub.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
 
+                    var auditrecord = new AuditLog();
+                    auditrecord.AuditActionType = "New User Account Created";
+                    auditrecord.DateTimeStamp = DateTime.Now;
+                    auditrecord.FoodIDField = 0;
+                    auditrecord.Description = String.Format("");
+                    auditrecord.Username = Input.Email;
+                    _context.AuditLogs.Add(auditrecord);
+                    await _context.SaveChangesAsync();
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);                                                     Prevent newly registered users from being automatically signed       
 

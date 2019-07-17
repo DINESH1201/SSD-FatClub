@@ -24,8 +24,10 @@ namespace FatClub.Models
         public DateTime DateTimeStamp { get; set; }
         //Time when the event occurred
 
-        [Display(Name = "Food ID ")]
-        public int foodIDField { get; set; }
-        //Store the ID of movie record that is affected
+        [Display(Name = "Food ID")]
+        public int FoodIDField { get; set; }
+        
+        [Display(Name = "Description")]
+        public string Description { get; set; }
     }
 }
