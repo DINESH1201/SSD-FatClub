@@ -67,6 +67,7 @@ namespace FatClub
             .AddRazorPagesOptions(options =>
             {
                 //options.Conventions.AllowAnonymousToFolder("/Foods");
+                options.Conventions.AuthorizeFolder("/Roles");
                 options.Conventions.AuthorizeAreaPage("Identity", "/Manage/Accounts");
             });
 
