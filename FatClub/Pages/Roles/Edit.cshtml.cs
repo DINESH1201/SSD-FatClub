@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FatClub.Models;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly RoleManager<ApplicationRole> _roleManager;

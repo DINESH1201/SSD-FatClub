@@ -85,8 +85,8 @@ namespace FatClub.Areas.Identity.Pages.Account
                     auditrecord.DateTimeStamp = DateTime.Now;
                     auditrecord.FoodIDField = 0;
                     auditrecord.Description = String.Format("");
-                    //auditrecord.Username = Input.Email;
-                    auditrecord.Username = User.Identity.Name.ToString();
+                    auditrecord.Username = Input.Email;
+                    //auditrecord.Username = User.Identity.Name.ToString();
                     _context.AuditLogs.Add(auditrecord);
                     await _context.SaveChangesAsync();
                     return LocalRedirect(returnUrl);
