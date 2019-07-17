@@ -1,0 +1,38 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    width:100%; 
+    height:100%;
+}
+section {
+    width: 100%;
+    margin-bottom: -10px;
+    height: auto;
+    display:grid;
+    grid-template-columns:65% 35%;
+}
+h1 {
+    font-size:190px;
+}
+.title-container {
+    display:grid;
+    grid-template-rows:50% 50%;
+}
+h2 {
+    text-align:left;
+}
+.search-bar{
+    width:100%;
+    height:55px;
+    padding-left:10px;
+    background-color:mediumseagreen;
+    color:white;
+    border: 2px solid mediumseagreen;
+    border-radius: 10px;
+    font-size: 20px;
+    outline:none;
+}
+
+.search-bar::placeholder{
+    color:white;
+}
