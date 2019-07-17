@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using FatClub.Models;
 
 namespace FatClub.Models
 {
@@ -25,5 +26,6 @@ namespace FatClub.Models
 
         public DbSet<FatClub.Models.Food> Food { get; set; }
         public DbSet<FatClub.Models.AuditLog> AuditLogs { get; set; }
+        public DbSet<FatClub.Models.Restaurant> Restaurant { get; set; }
     }
 }
