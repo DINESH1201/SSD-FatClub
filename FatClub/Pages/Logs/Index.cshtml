@@ -8,9 +8,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.AuditLog) {
+@foreach (var item in Model.AuditLog.Reverse()) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.AuditActionType)
