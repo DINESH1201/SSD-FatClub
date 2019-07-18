@@ -23,9 +23,6 @@ namespace FatClub.Models
         [DataType(DataType.DateTime)]
         public DateTime DateTimeStamp { get; set; }
         //Time when the event occurred
-
-        [Display(Name = "Food ID")]
-        public int FoodIDField { get; set; }
         
         [Display(Name = "Description")]
         public string Description { get; set; }

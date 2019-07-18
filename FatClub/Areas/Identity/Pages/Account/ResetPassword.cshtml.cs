@@ -15,10 +15,12 @@ namespace FatClub.Areas.Identity.Pages.Account
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
+        public ResetPasswordModel(UserManager<ApplicationUser> userManager, FatClub.Models.FatClubContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         [BindProperty]
@@ -76,6 +78,13 @@ namespace FatClub.Areas.Identity.Pages.Account
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "New User Account Created";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("Account with email {0} has resetted their account.", Input.Email);
+                auditrecord.Username = Input.Email;
+                _context.AuditLogs.Add(auditrecord);
+                await _context.SaveChangesAsync();
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 

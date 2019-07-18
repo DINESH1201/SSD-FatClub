@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FatClub.Pages.Logs
+namespace FatClub.Pages.Foods
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Staff")]
     public class DeleteModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -21,7 +21,7 @@ namespace FatClub.Pages.Logs
         }
 
         [BindProperty]
-        public AuditLog AuditLog { get; set; }
+        public Food Food { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +30,9 @@ namespace FatClub.Pages.Logs
                 return NotFound();
             }
 
-            AuditLog = await _context.AuditLogs.FirstOrDefaultAsync(m => m.Audit_ID == id);
+            Food = await _context.Food.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (AuditLog == null)
+            if (Food == null)
             {
                 return NotFound();
             }
@@ -46,12 +46,24 @@ namespace FatClub.Pages.Logs
                 return NotFound();
             }
 
-            AuditLog = await _context.AuditLogs.FindAsync(id);
+            Food = await _context.Food.FindAsync(id);
 
-            if (AuditLog != null)
+            if (Food != null)
             {
-                _context.AuditLogs.Remove(AuditLog);
-                await _context.SaveChangesAsync();
+                _context.Food.Remove(Food);
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    var auditrecord = new AuditLog();
+                    auditrecord.AuditActionType = "Delete Food";
+                    auditrecord.DateTimeStamp = DateTime.Now;
+                    auditrecord.Description = String.Format("Food named {1} with ID {0} was deleted from {2}.", Food.ID, Food.Name, Food.Price);
+                    var userID = User.Identity.Name.ToString();
+                    auditrecord.Username = userID;
+
+                    _context.AuditLogs.Add(auditrecord);
+                    await _context.SaveChangesAsync();
+                }
+                //await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

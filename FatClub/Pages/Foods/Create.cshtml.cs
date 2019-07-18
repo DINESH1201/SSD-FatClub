@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using FatClub.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FatClub.Pages.Logs
+namespace FatClub.Pages.Foods
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Staff")]
     public class CreateModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -26,7 +26,7 @@ namespace FatClub.Pages.Logs
         }
 
         [BindProperty]
-        public AuditLog AuditLog { get; set; }
+        public Food Food { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,8 +35,23 @@ namespace FatClub.Pages.Logs
                 return Page();
             }
 
-            _context.AuditLogs.Add(AuditLog);
-            await _context.SaveChangesAsync();
+            _context.Food.Add(Food);
+
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "Add Food";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("Food named {1} with ID {0} was added to {2}.", Food.ID, Food.Name, Food.Price);
+                var userID = User.Identity.Name.ToString();
+                auditrecord.Username = userID;
+
+                _context.AuditLogs.Add(auditrecord);
+                await _context.SaveChangesAsync();
+            }
+
+
+           // await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

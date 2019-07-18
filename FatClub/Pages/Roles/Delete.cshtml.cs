@@ -48,16 +48,15 @@ namespace FatClub.Pages.Roles
             }
 
             ApplicationRole = await _roleManager.FindByIdAsync(id);
-            IdentityResult roleRuslt = await _roleManager.DeleteAsync(ApplicationRole);
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "Role Deleted";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.FoodIDField = 0;
-            auditrecord.Description = String.Format("");
+            auditrecord.Description = String.Format("Role named {0} with ID {1} was deleted.", ApplicationRole.Name, ApplicationRole.Id);
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);
             await _context.SaveChangesAsync();
+            IdentityResult roleRuslt = await _roleManager.DeleteAsync(ApplicationRole);
             return RedirectToPage("./Index");
 
         }
