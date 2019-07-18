@@ -23,9 +23,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.AuditLog[0].DateTimeStamp)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuditLog[0].FoodIDField)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,12 +39,9 @@
                 @Html.DisplayFor(modelItem => item.DateTimeStamp)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FoodIDField)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Audit_ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Audit_ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Audit_ID">Delete</a>
+        <!--<a asp-page="./Edit" asp-route-id="@item.Audit_ID">Edit</a> | -->
+            <a asp-page="./Details" asp-route-id="@item.Audit_ID">Details</a> <!--|
+        <a asp-page="./Delete" asp-route-id="@item.Audit_ID">Delete</a>-->
             </td>
         </tr>
 }

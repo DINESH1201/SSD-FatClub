@@ -56,8 +56,7 @@ namespace FatClub.Pages.Roles
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "Role Updated";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.FoodIDField = 0;
-            auditrecord.Description = String.Format("");
+            auditrecord.Description = String.Format("Role named {1} with ID {0} was deleted.",ApplicationRole.Id, ApplicationRole.Name);
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);

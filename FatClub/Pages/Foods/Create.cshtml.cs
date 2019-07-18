@@ -42,8 +42,7 @@ namespace FatClub.Pages.Foods
                 var auditrecord = new AuditLog();
                 auditrecord.AuditActionType = "Add Food";
                 auditrecord.DateTimeStamp = DateTime.Now;
-                auditrecord.FoodIDField = Food.ID;
-                auditrecord.Description = String.Format("");
+                auditrecord.Description = String.Format("Food named {1} with ID {0} was added to {2}.", Food.ID, Food.Name, Food.Price);
                 var userID = User.Identity.Name.ToString();
                 auditrecord.Username = userID;
 

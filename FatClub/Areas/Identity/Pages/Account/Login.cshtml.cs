@@ -83,8 +83,7 @@ namespace FatClub.Areas.Identity.Pages.Account
                     var auditrecord = new AuditLog();
                     auditrecord.AuditActionType = "User Login";
                     auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.FoodIDField = 0;
-                    auditrecord.Description = String.Format("");
+                    auditrecord.Description = String.Format("Account with email {0} has logged in.", Input.Email);
                     auditrecord.Username = Input.Email;
                     //auditrecord.Username = User.Identity.Name.ToString();
                     _context.AuditLogs.Add(auditrecord);
@@ -96,8 +95,7 @@ namespace FatClub.Areas.Identity.Pages.Account
                     var auditrecord = new AuditLog();
                     auditrecord.AuditActionType = "Failed Login";
                     auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.FoodIDField = 0;
-                    auditrecord.Description = String.Format("");
+                    auditrecord.Description = String.Format("Account with email {0} failed to log in.", Input.Email);
                     auditrecord.Username = Input.Email;
                     _context.AuditLogs.Add(auditrecord);
                     await _context.SaveChangesAsync();
@@ -113,8 +111,7 @@ namespace FatClub.Areas.Identity.Pages.Account
                     var auditrecord = new AuditLog();
                     auditrecord.AuditActionType = "Account locked out";
                     auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.FoodIDField = 0;
-                    auditrecord.Description = String.Format("");
+                    auditrecord.Description = String.Format("Account with email {0} has been locked out.", Input.Email);
                     auditrecord.Username = Input.Email;
                     _context.AuditLogs.Add(auditrecord);
                     await _context.SaveChangesAsync();

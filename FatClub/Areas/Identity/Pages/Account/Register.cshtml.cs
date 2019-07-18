@@ -104,8 +104,7 @@ namespace FatClub.Areas.Identity.Pages.Account
                     var auditrecord = new AuditLog();
                     auditrecord.AuditActionType = "New User Account Created";
                     auditrecord.DateTimeStamp = DateTime.Now;
-                    auditrecord.FoodIDField = 0;
-                    auditrecord.Description = String.Format("");
+                    auditrecord.Description = String.Format("Account with email {0} has been created by {1} {2}.", Input.Email, Input.FirstName, Input.LastName);
                     auditrecord.Username = Input.Email;
                     _context.AuditLogs.Add(auditrecord);
                     await _context.SaveChangesAsync();
