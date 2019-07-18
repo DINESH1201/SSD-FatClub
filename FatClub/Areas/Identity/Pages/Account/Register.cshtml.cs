@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using Microsoft.IdentityModel.Protocols;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace FatClub.Areas.Identity.Pages.Account
 {
@@ -73,11 +77,31 @@ namespace FatClub.Areas.Identity.Pages.Account
 
         }
 
+
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
         }
+        public bool IsReCaptchValid()
+        {
+            var result = false;
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = "6LdPX64UAAAAABFg204xI-xAKTDNcvYhQX2HNPvj";
+            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
 
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
+        }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Login");
@@ -118,6 +142,8 @@ namespace FatClub.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+
 
             // If we got this far, something failed, redisplay form
             return Page();
