@@ -10,8 +10,8 @@ namespace FatClub.Models
     public class ApplicationRole : IdentityRole
     {
         [DataType(DataType.MultilineText)]
+        [StringLength(150)]
         public string Description { get; set; }
-
         public DateTime CreatedDate { get; set; }
         public string IPAddress { get; set; }
 
