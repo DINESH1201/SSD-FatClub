@@ -16,6 +16,8 @@ namespace FatClub.Pages
         {
             _context = context;
         }
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
 
         public void OnGet()
         {
