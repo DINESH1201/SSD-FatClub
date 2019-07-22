@@ -28,7 +28,7 @@ namespace FatClub.Pages.Restaurants
                 return NotFound();
             }
 
-            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.ID == id);
+            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
 
             if (Restaurant == null)
             {

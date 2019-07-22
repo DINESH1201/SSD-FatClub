@@ -29,7 +29,7 @@ namespace FatClub.Pages.Restaurants
                 return NotFound();
             }
 
-            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.ID == id);
+            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
 
             if (Restaurant == null)
             {
@@ -53,7 +53,7 @@ namespace FatClub.Pages.Restaurants
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RestaurantExists(Restaurant.ID))
+                if (!RestaurantExists(Restaurant.RestaurantID))
                 {
                     return NotFound();
                 }
@@ -68,7 +68,7 @@ namespace FatClub.Pages.Restaurants
 
         private bool RestaurantExists(int id)
         {
-            return _context.Restaurant.Any(e => e.ID == id);
+            return _context.Restaurant.Any(e => e.RestaurantID == id);
         }
     }
 }
