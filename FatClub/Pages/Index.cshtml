@@ -5,6 +5,8 @@
 }
 <head>
     <link rel="stylesheet" type="text/css" href="~/css/index-styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 <body>
     <section>
@@ -14,5 +16,92 @@
             <h2>Redefining food, one mouth at a time.</h2>
         </div>
     </section>
-    <input class="search-bar" type="text" placeholder="What've you been craving..." asp-for="SearchString" ></input>
+    <input class="search-bar" type="text" placeholder="What've you been craving..." asp-for="SearchString">
+
+    <h2 class="why">Why Choose Fat Club?</h2>
+    <div class="Benefit">
+        <div class="box">
+            <i class="material-icons">money</i><br />
+            <span>Affordable prices</span><br />
+            Fret not, our delivery prices are reasonable and affordable <br />
+
+
+        </div>
+        <div class="box">
+            <i class="material-icons">room_service</i><br />
+            <span>Wide selection of food</span><br />
+            Our extensive network of partnerships with food establishments allow you to have anything you crave<br />
+
+        </div>
+        <div class="box">
+            <i class="material-icons">drive_eta</i><br />
+            <span>Fast delivery</span><br />
+            Our certified drivers together with our real-time traffic monitoring systems will make sure the food is delivered to via the fastest route<br />
+
+        </div>
+    </div>
+
+   
+
 </body>
+
+<style>
+    body{
+        padding-bottom:10%;
+    }
+    .Benefit {
+        box-sizing: border-box;
+        text-align: left;
+        padding-left: 5%;
+        padding-bottom: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .Benefit::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .Benefit i {
+            font-size: 3.5em;
+        }
+
+        .Benefit span {
+            font-size: 25px;
+            line-height: 42px;
+        }
+
+        .Benefit a {
+            line-height: 42px;
+            text-decoration: none;
+            color: green;
+        }
+
+            .Benefit a:hover {
+                color: blue;
+            }
+
+
+    .box {
+        display: inline-block;
+        width: 33.33%;
+        padding-left:1%;
+        
+    }
+
+
+
+    .why {
+        padding-top: 10px;
+        padding-left: 5%;
+        font-size: 2em;
+        padding-bottom: 1em;
+        padding-top: 5%;
+    }
+
+   
+    
+</style>
