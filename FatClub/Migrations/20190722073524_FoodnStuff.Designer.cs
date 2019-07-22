@@ -4,14 +4,16 @@ using FatClub.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FatClub.Migrations
 {
     [DbContext(typeof(FatClubContext))]
-    partial class FatClubContextModelSnapshot : ModelSnapshot
+    [Migration("20190722073524_FoodnStuff")]
+    partial class FoodnStuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,8 +139,7 @@ namespace FatClub.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("money");
+                    b.Property<decimal>("Price");
 
                     b.Property<int>("RestaurantID");
 

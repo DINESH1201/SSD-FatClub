@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FatClub.Models
 {
@@ -14,6 +15,7 @@ namespace FatClub.Models
         [RegularExpression("^[0-5]{1}$")]
         public int Star { get; set; }
         public Restaurant Restaurant { get; set; }
+        [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
     }
 }

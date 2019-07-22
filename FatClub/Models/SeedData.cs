@@ -16,11 +16,9 @@ namespace FatClub.Models
                     DbContextOptions<FatClubContext>>()))
             {
                 // Look for any movies.
-                if (context.Food.Any())
-                {
-                    return;   // DB has been seeded
-                }
 
+                return;
+                /*
                 context.Food.AddRange(
                     new Food
                     {
@@ -46,7 +44,9 @@ namespace FatClub.Models
                         Price = 3.99M
                     }
                 );
+                
                 context.SaveChanges();
+                */
             }
         }
     }

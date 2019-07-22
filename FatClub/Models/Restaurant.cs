@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace FatClub.Models
 {
     public class Restaurant
-    {
-        [Key]
+    {   [Key]
         public int RestaurantID { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
