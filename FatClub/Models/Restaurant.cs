@@ -7,6 +7,7 @@ namespace FatClub.Models
 {
     public class Restaurant
     {
+        [Key]
         public int RestaurantID { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
