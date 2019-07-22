@@ -14,7 +14,6 @@ namespace FatClub.Models
         public string Description { get ; set ; }
         [RegularExpression("^[0-5]{1}$")]
         public int Star { get; set; }
-        public Restaurant Restaurant { get; set; }
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
     }

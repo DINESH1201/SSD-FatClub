@@ -30,7 +30,7 @@ namespace FatClub.Pages.Restaurants
             {
                 restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
             }
-            Restaurant = await _context.Restaurant.Include(r => r.Foods).Include(r => r.Ratings).ToListAsync();
+            Restaurant = await restaurants.Include(r => r.Foods).Include(r => r.Ratings).ToListAsync();
        
         }
     }
