@@ -90,6 +90,19 @@ namespace FatClub
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "FatClubCookie";
+                //  options.Cookie.Domain=
+                // options.LoginPath = "/Account/Login";
+                // options.LogoutPath = "/Account/Logout";
+                // options.AccessDeniedPath = "/Account/AccessDenied";
+
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(1200);
+                options.SlidingExpiration = true;
+
+            });
 
 
         }
@@ -99,6 +112,7 @@ namespace FatClub
         {
             if (env.IsDevelopment())
             {
+                //Remember to remove this when we actually submit
                 app.UseDeveloperExceptionPage();
             }
             else

@@ -82,7 +82,7 @@ namespace FatClub.Pages.Roles
             {
                 return RedirectToPage("Manage");
             }
-
+            
             ApplicationUser AppUser = _context.Users.SingleOrDefault(u => u.UserName == selectedusername);
             ApplicationRole AppRole = await _roleManager.FindByNameAsync(selectedrolename);
 
