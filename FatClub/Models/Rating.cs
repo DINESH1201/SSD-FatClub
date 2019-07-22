@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations;
 namespace FatClub.Models
 {
     public class Rating
-    {
-        public int ID { get ; set ; }
+    {   [Key]
+        public int RatingID { get ; set ; }
         [StringLength(150)]
         public string Description { get ; set ; }
+        public Restaurant Restaurant { get; set; }
+        public int RestaurantID { get; set; }
     }
 }

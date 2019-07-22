@@ -22,7 +22,8 @@ namespace FatClub.Pages.Restaurants
 
         public async Task OnGetAsync()
         {
-            Restaurant = await _context.Restaurant.ToListAsync();
+            Restaurant = await _context.Restaurant.Include(r => r.Foods).Include(r => r.Ratings).ToListAsync();
+       
         }
     }
 }
