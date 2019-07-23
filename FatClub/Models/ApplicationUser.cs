@@ -12,9 +12,7 @@ namespace FatClub.Models
         public string FirstName { get; set; }
         [StringLength(50)]
         public string LastName { get; set; }
-        [StringLength(8)]
-        [RegularExpression(@"^[0-9]*$")]
-        public string MobileNo { get; set; }
+        
     }
 
 }

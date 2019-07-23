@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 
-namespace FatClub.Pages.Restaurants
+namespace FatClub.Pages.Foods
 {
     public class DetailsModel : PageModel
     {
@@ -18,8 +18,7 @@ namespace FatClub.Pages.Restaurants
             _context = context;
         }
 
-        public Restaurant Restaurant { get; set; }
-        public IList<Food> Food { get; set; }
+        public Food Food { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,18 +27,12 @@ namespace FatClub.Pages.Restaurants
                 return NotFound();
             }
 
-            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+            Food = await _context.Food.FirstOrDefaultAsync(m => m.FoodID == id);
 
-            if (Restaurant == null)
+            if (Food == null)
             {
                 return NotFound();
             }
-            var foodlist = from r in _context.Food select r;
-            foodlist = foodlist.Where(r => r.RestaurantID == id);
-            // Food = await _context.Food.
-            Food = await foodlist.ToListAsync();
-
-
             return Page();
         }
     }

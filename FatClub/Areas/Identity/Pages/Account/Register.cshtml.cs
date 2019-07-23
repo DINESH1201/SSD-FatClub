@@ -74,7 +74,7 @@ namespace FatClub.Areas.Identity.Pages.Account
             [Required]
             [RegularExpression(@"^([8-9]{1})(\d{7})$", ErrorMessage = "Enter a proper mobile no. Starts with 8 or 9 and 7 other digits.")]
             [Display(Name = "Mobile No")]   
-            public string MobileNo { get; set; }
+            public string PhoneNumber { get; set; }
 
         }
 
@@ -108,7 +108,7 @@ namespace FatClub.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Login");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, MobileNo = Input.MobileNo };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
