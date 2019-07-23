@@ -25,12 +25,12 @@ namespace FatClub.Pages.Restaurants
 
         public async Task OnGetAsync()
         {
-            var restaurants = from r in _context.Restaurant select r;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
-            }
-            Restaurant = await restaurants.Include(r => r.Foods).Include(r => r.Ratings).ToListAsync();
+            //var restaurants = from r in _context.Restaurant select r;
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+              //  restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
+            //}
+            Restaurant = await _context.Restaurant.ToListAsync();
        
         }
     }
