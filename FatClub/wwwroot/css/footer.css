@@ -1,0 +1,14 @@
+﻿.footer-center-stuff{
+
+}
+.footer-center-stuff > p{
+    font-weight:bolder;
+    text-decoration:none;
+    color:white;
+    cursor:default;
+}
+.footer-center-stuff > p > a {
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
