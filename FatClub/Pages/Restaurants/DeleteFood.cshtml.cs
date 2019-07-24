@@ -4,23 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 
 namespace FatClub.Pages.Restaurants
 {
-    public class EditModel : PageModel
+    public class DeleteFoodModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
 
-        public EditModel(FatClub.Models.FatClubContext context)
+        public DeleteFoodModel(FatClub.Models.FatClubContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Restaurant Restaurant { get; set; }
+        public Food Food { get; set; }
+        private Restaurant Restaurant { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,7 +31,7 @@ namespace FatClub.Pages.Restaurants
 
             Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
 
-            if (Restaurant == null)
+            if (Food == null)
             {
                 return NotFound();
             }
@@ -40,36 +40,21 @@ namespace FatClub.Pages.Restaurants
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Restaurant).State = EntityState.Modified;
+            Food = await _context.Food.FindAsync(id);
 
-            try
+            if (Food != null)
             {
+                _context.Food.Remove(Food);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RestaurantExists(Restaurant.RestaurantID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             Response.Redirect("./Details?id=" + id);
             return null;
-        }
-
-        private bool RestaurantExists(int id)
-        {
-            return _context.Restaurant.Any(e => e.RestaurantID == id);
         }
     }
 }

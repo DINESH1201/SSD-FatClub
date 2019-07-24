@@ -47,19 +47,19 @@ namespace FatClub.Pages.Restaurants
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            Food.RestaurantID = 1;
-            //Food.FoodID = 2;
+            
+            Food.RestaurantID = Convert.ToInt32(id);
             _context.Food.Add(Food);
             await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            Response.Redirect("./Details?id=" + id);
+            return null;
         }
     }
 }
