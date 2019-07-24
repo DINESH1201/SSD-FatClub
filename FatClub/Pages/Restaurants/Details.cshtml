@@ -32,8 +32,11 @@
     </dl>
 </div>
 <p>
-    <a asp-page="AddFood" asp-route-id="@Model.Restaurant.RestaurantID">Create New</a>
-</p>
+    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+    {
+        <a asp-page="AddFood" asp-route-id="@Model.Restaurant.RestaurantID">Create New</a>
+    }
+    </p>
 <table class="table">
     <thead>
         <tr>
@@ -57,14 +60,22 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
-                    <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a>
-                </td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                    {
+                        <p>
+                            <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
+                            <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a>
+                        </p>
+                    }
+                    </td>
             </tr>
         }
     </tbody>
 </table>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Restaurant.RestaurantID">Edit</a> |
+    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+    {
+        <text><a asp-page="./Edit" asp-route-id="@Model.Restaurant.RestaurantID">Edit</a> |</text>
+    }
     <a asp-page="./Index">Back to List</a>
-</div>
+    </div>

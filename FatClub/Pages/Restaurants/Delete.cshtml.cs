@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Restaurants
 {
+    [Authorize(Roles = "Admin, Staff")]
     public class DeleteModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;

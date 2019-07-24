@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FatClub.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Restaurants
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class AddFoodModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
