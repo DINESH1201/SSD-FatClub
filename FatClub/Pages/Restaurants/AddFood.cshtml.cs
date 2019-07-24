@@ -57,6 +57,16 @@ namespace FatClub.Pages.Restaurants
             
             Food.RestaurantID = Convert.ToInt32(id);
             _context.Food.Add(Food);
+            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Food added to restaurant";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("Restaurant, {0}, with ID, {1}, has {2} with {3} to its menu by {4}", Restaurant.Name, Restaurant.RestaurantID, Food.Name, Food.Price, User.Identity.Name.ToString());
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
+
             await _context.SaveChangesAsync();
             Response.Redirect("./Details?id=" + id);
             return null;

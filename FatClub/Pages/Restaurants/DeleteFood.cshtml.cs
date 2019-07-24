@@ -49,6 +49,16 @@ namespace FatClub.Pages.Restaurants
 
             if (Food != null)
             {
+                Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "Food deleted";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("{0} was deleted from {2} by {1}.", Food.Name, User.Identity.Name.ToString(),Restaurant.Name);
+                var userID = User.Identity.Name.ToString();
+                auditrecord.Username = userID;
+                _context.AuditLogs.Add(auditrecord);
+
                 _context.Food.Remove(Food);
                 await _context.SaveChangesAsync();
             }

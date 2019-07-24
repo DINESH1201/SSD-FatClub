@@ -62,6 +62,13 @@ namespace FatClub.Pages.Restaurants
                     throw;
                 }
             }
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Restaurant Edited";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("{0} was edited by {1}.", Restaurant.Name, User.Identity.Name.ToString());
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
 
             Response.Redirect("./Details?id=" + id);
             return null;
