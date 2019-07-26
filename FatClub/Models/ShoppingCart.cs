@@ -9,7 +9,12 @@ namespace FatClub.Models
 {
     public class ShoppingCart
     {
+        [Key]
+        public int ShoppingCartID { get; set; }
+
         [ForeignKey("ApplicationUser")]
         public string UserName { get; set; }
+
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }
