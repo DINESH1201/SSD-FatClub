@@ -5,6 +5,14 @@
     ViewData["Title"] = "Details";
 }
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    function AddToCart() {
+        $.get("/AddToCart", function (data) {
+        });
+    }
+</script>
+
 <h1>Details</h1>
 
 <div>
@@ -62,12 +70,14 @@
                 <td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                     {
-                    <p>
-                        <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
-                        <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a>
-                    </p>
+                        <p>
+                            <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
+                            <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a> |
+
+                        </p>
                     }
-                    </td>
+                    <input formmethod="put" type="button" asp-route-FoodID="@item.FoodID" asp-page-handler="AddToCart"> value="Add to cart" />
+                </td>
             </tr>
         }
     </tbody>

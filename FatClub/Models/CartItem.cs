@@ -15,10 +15,10 @@ namespace FatClub.Models
         public int Quantity { get; set; }
 
         [ForeignKey("Food")]
-        public string FoodID { get; set; }
+        public int FoodID { get; set; }
 
 
         [ForeignKey("ShoppingCart")]
-        public string ShoppingCartID { get; set; }
+        public int ShoppingCartID { get; set; }
     }
 }

@@ -23,6 +23,19 @@ namespace FatClub.Pages.Restaurants
         public Restaurant Restaurant { get; set; }
         public IList<Food> Food { get; set; }
 
+        public async Task OnPutAddToCartAsync(int FoodID)
+        {
+            var cartItem = new CartItem();
+            cartItem.FoodID = FoodID;
+            cartItem.Quantity = 1;
+            String currentUserName = User.Identity.Name.ToString();
+            ApplicationUser CurrentUser = await _context.Users.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            cartItem.ShoppingCartID = CurrentUser.ShoppingCart.ShoppingCartID;
+            _context.CartItems.Add(cartItem);
+            
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
