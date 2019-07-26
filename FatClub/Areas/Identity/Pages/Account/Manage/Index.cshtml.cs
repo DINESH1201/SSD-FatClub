@@ -46,6 +46,7 @@ namespace FatClub.Areas.Identity.Pages.Account.Manage
 
             [Phone]
             [Display(Name = "Phone number")]
+            [RegularExpression(@"^([8-9]{1})(\d{7})$", ErrorMessage = "Enter a proper mobile no. Starts with 8 or 9 and 7 other digits.")]
             public string PhoneNumber { get; set; }
         }
 

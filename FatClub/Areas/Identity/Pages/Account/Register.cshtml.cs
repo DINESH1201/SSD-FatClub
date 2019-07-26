@@ -55,6 +55,7 @@ namespace FatClub.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+    
             [Display(Name = "Password")]
             public string Password { get; set; }
 
@@ -65,10 +66,12 @@ namespace FatClub.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "First Name")]
+            [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Please enter valid string.")]
             public string FirstName { get; set; }
 
             [Required]
             [Display(Name = "Last Name")]
+            [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Please enter valid string.")]
             public string LastName { get; set; }
 
             [Required]
