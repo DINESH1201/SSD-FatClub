@@ -30,7 +30,7 @@ namespace FatClub.Services
             {
                 From = new EmailAddress("Fatclub@contoso.com", "Fat Club"),
                 Subject = subject,
-                PlainTextContent = message,
+                PlainTextContent = message, 
                 HtmlContent = message
             };
             msg.AddTo(new EmailAddress(email));

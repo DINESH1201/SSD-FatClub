@@ -75,7 +75,7 @@ namespace FatClub
             {
                 // Password settings
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 5;
+                options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
@@ -93,7 +93,7 @@ namespace FatClub
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "FatClubCookie";
-                //  options.Cookie.Domain=
+                //  options.Cookie.Domain
                 // options.LoginPath = "/Account/Login";
                 // options.LogoutPath = "/Account/Logout";
                 // options.AccessDeniedPath = "/Account/AccessDenied";
