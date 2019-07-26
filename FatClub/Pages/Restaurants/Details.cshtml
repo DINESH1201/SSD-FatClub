@@ -62,10 +62,10 @@
                 <td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                     {
-                        <p>
-                            <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
-                            <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a>
-                        </p>
+                    <p>
+                        <a asp-page="./EditFood" asp-route-id="@item.FoodID">Edit</a> |
+                        <a asp-page="./DeleteFood" asp-route-id="@item.FoodID">Delete</a>
+                    </p>
                     }
                     </td>
             </tr>
