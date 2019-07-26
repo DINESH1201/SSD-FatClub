@@ -4,14 +4,16 @@ using FatClub.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FatClub.Migrations
 {
     [DbContext(typeof(FatClubContext))]
-    partial class FatClubContextModelSnapshot : ModelSnapshot
+    [Migration("20190726073550_smallchanges")]
+    partial class smallchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,8 +91,6 @@ namespace FatClub.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<int?>("ShoppingCartID");
-
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -105,8 +105,6 @@ namespace FatClub.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("ShoppingCartID");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -214,7 +212,13 @@ namespace FatClub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("UserName");
+
                     b.HasKey("ShoppingCartID");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -305,13 +309,6 @@ namespace FatClub.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FatClub.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("FatClub.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartID");
-                });
-
             modelBuilder.Entity("FatClub.Models.CartItem", b =>
                 {
                     b.HasOne("FatClub.Models.ShoppingCart")
@@ -333,6 +330,13 @@ namespace FatClub.Migrations
                         .WithMany("Ratings")
                         .HasForeignKey("RestaurantID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FatClub.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("FatClub.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("FatClub.Models.ShoppingCart", "UserName");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

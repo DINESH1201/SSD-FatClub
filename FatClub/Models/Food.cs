@@ -17,9 +17,7 @@ namespace FatClub.Models
         public decimal Price { get; set; }
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
-
-        public virtual CartItem CartItem { get; set; }
-
+        
         public static implicit operator Food(List<Food> v)
         {
             throw new NotImplementedException();

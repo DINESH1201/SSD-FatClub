@@ -112,11 +112,10 @@ namespace FatClub.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var shoppingCart = new ShoppingCart();
-                shoppingCart.UserName = Input.Email;
                 _context.ShoppingCarts.Add(shoppingCart);
                 await _context.SaveChangesAsync();
 
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, PhoneNumber = Input.PhoneNumber };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, PhoneNumber = Input.PhoneNumber, ShoppingCart = shoppingCart };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
