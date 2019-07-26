@@ -28,5 +28,7 @@ namespace FatClub.Models
         public DbSet<FatClub.Models.Rating> Rating { get; set; }
         public DbSet<FatClub.Models.AuditLog> AuditLogs { get; set; }
         public DbSet<FatClub.Models.Restaurant> Restaurant { get; set; }
+        public DbSet<FatClub.Models.ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<FatClub.Models.CartItem> CartItems { get; set; }
     }
 }

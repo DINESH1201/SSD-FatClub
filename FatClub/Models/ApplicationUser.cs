@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace FatClub.Models
 {
@@ -13,9 +14,9 @@ namespace FatClub.Models
         public string FirstName { get; set; }
         [StringLength(50)]
         public string LastName { get; set; }
-        [ForeignKey("ShoppingCart")]
-        public ShoppingCart ShoppingCart { get; set; }
         
+        public ShoppingCart ShoppingCart { get; set; }
+
     }
 
 }

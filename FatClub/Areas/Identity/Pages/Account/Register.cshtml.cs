@@ -83,7 +83,8 @@ namespace FatClub.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
         }
-        public bool IsReCaptchValid()
+
+        /*public bool IsReCaptchValid()
         {
             var result = false;
             var captchaResponse = Request.Form["g-recaptcha-response"];
@@ -103,11 +104,18 @@ namespace FatClub.Areas.Identity.Pages.Account
             }
             return result;
         }
+        */
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Login");
             if (ModelState.IsValid)
             {
+                var shoppingCart = new ShoppingCart();
+                shoppingCart.UserName = Input.Email;
+                _context.ShoppingCarts.Add(shoppingCart);
+                await _context.SaveChangesAsync();
+
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
