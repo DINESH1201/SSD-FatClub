@@ -23,8 +23,9 @@ namespace FatClub.Pages.Restaurants
         public Restaurant Restaurant { get; set; }
         public IList<Food> Food { get; set; }
 
-        public async Task OnPutAddToCartAsync(int FoodID)
+        public async Task<ActionResult> AddToCartAsync(int FoodID)
         {
+
             var cartItem = new CartItem();
             cartItem.FoodID = FoodID;
             cartItem.Quantity = 1;
@@ -34,6 +35,7 @@ namespace FatClub.Pages.Restaurants
             _context.CartItems.Add(cartItem);
             
             await _context.SaveChangesAsync();
+            return null;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
