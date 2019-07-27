@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace FatClub.Pages.Restaurants
 {
@@ -23,20 +24,32 @@ namespace FatClub.Pages.Restaurants
         public Restaurant Restaurant { get; set; }
         public IList<Food> Food { get; set; }
 
-        public async Task<ActionResult> AddToCartAsync(int FoodID)
-        {
+       // public async Task<IActionResult> OnGetAddToCart(int FoodID)
+        //{
 
+          
+           // return null;
+        //}
+
+        public async Task<IActionResult> OnGetAddToCartAsync(int FoodID, int? id)
+        {
+            String currentUserName = User.Identity.Name;
+            ApplicationUser CurrentUser = await _context.Users.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            //            ShoppingCart cart = await _context.ShoppingCarts.Intersect
+            
             var cartItem = new CartItem();
             cartItem.FoodID = FoodID;
             cartItem.Quantity = 1;
-            String currentUserName = User.Identity.Name.ToString();
-            ApplicationUser CurrentUser = await _context.Users.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            cartItem.ShoppingCartID = 10;
+
             cartItem.ShoppingCartID = CurrentUser.ShoppingCart.ShoppingCartID;
             _context.CartItems.Add(cartItem);
-            
+
             await _context.SaveChangesAsync();
-            return null;
+            
+            return await OnGetAsync(id);
         }
+        
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

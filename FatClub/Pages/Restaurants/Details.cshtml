@@ -68,7 +68,8 @@
 
                         </p>
                     }
-                        <a asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID">Sell Product</a>
+                    <a asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID">Add to cart</a>
+                    
                 </td>
             </tr>
         }
