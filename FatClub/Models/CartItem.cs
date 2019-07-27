@@ -14,10 +14,11 @@ namespace FatClub.Models
        
         public int Quantity { get; set; }
 
+        [Required]
         [ForeignKey("Food")]
         public int FoodID { get; set; }
 
-
+        [Required]
         [ForeignKey("ShoppingCart")]
         public int ShoppingCartID { get; set; }
     }

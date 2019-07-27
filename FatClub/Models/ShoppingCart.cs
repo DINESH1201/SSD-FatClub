@@ -12,8 +12,9 @@ namespace FatClub.Models
         [Key]
         public int ShoppingCartID { get; set; }
 
-       // [ForeignKey("ApplicationUser")]
-        //public string UserName { get; set; }
+        [Required]
+        [ForeignKey("ApplicationUser")]
+        public string UserName { get; set; }
 
 //        public virtual ApplicationUser ApplicationUser { get; set; }
 

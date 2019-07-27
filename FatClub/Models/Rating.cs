@@ -11,6 +11,7 @@ namespace FatClub.Models
     {   [Key]
         public int RatingID { get ; set ; }
         public int Star { get; set; }
+        [Required]
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
     }

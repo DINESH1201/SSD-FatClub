@@ -15,6 +15,7 @@ namespace FatClub.Models
         [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})?$", ErrorMessage = "Price cannot have more than 2 decimal places")]
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
+        [Required]
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
         

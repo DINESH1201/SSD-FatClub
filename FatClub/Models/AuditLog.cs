@@ -14,7 +14,7 @@ namespace FatClub.Models
         [Display(Name = "Action")]
         public string AuditActionType { get; set; }
         // Could be  Login Success /Failure/ Logout, Create, Delete, View, Update
-
+        
         [Display(Name = "Performed by")]
         public string Username { get; set; }
         //Logged in user performing the action

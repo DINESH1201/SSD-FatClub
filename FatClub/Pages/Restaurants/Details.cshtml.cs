@@ -34,15 +34,12 @@ namespace FatClub.Pages.Restaurants
         public async Task<IActionResult> OnGetAddToCartAsync(int FoodID, int? id)
         {
             String currentUserName = User.Identity.Name;
-            ApplicationUser CurrentUser = await _context.Users.FirstOrDefaultAsync(m => m.UserName == currentUserName);
-            //            ShoppingCart cart = await _context.ShoppingCarts.Intersect
             
             var cartItem = new CartItem();
             cartItem.FoodID = FoodID;
             cartItem.Quantity = 1;
-            cartItem.ShoppingCartID = 10;
-
-            cartItem.ShoppingCartID = CurrentUser.ShoppingCart.ShoppingCartID;
+            ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            cartItem.ShoppingCartID = cart.ShoppingCartID;
             _context.CartItems.Add(cartItem);
 
             await _context.SaveChangesAsync();
