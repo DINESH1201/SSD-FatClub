@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Cart
 {
+    [Authorize]
     public class ViewCartModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
@@ -34,6 +36,22 @@ namespace FatClub.Pages.Cart
             return Page();
         }
 
+        public async Task<IActionResult> OnGetCheckoutAsync()
+        {
+            String currentUsername = User.Identity.Name;
+            ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUsername);
+            CartItem = await _context.CartItems.Where(item => item.ShoppingCartID == cart.ShoppingCartID).ToListAsync();
+
+            foreach(CartItem items in CartItem)
+            {
+                _context.CartItems.Remove(items);
+            }
+            await _context.SaveChangesAsync();
+
+            
+            return RedirectToPage("./Checkout");
+        }
+
         public IList<CartItem> CartItem { get; set; }
         public IList<Food> Food = new List<Food>();
         public string Total { get; set; }
@@ -51,7 +69,7 @@ namespace FatClub.Pages.Cart
                 Food.Add(food);
             }
 
-            Total = String.Format("${0}", total.ToString("#.##"));
+            Total = String.Format("${0}", total.ToString("0.##"));
 
         }
     }

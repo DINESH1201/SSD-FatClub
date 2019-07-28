@@ -6,11 +6,8 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>ViewCart</h1>
+<h1>My Cart</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -44,29 +41,20 @@
                 </td>
             </tr>
         }
-        <!-- @foreach (var item in Model.CartItem)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FoodID)
-                    </td>
-                    <td>
-                        <a asp-page-handler="DeleteFromCart" asp-route-id="@item.CartItemID">Remove from cart</a>
-                    </td>
-                </tr>
-            }-->
-            <tr>
-                <th></th>
-                <th></th>
-                <th>
-                    Total
-                </th>
-                <th>
-                    @Model.Total
-                </th>
-            </tr>
-        </tbody>
-    </table>
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th>
+                Total
+            </th>
+            <th>
+                @Model.Total
+            </th>
+        </tr>
+    </tbody>
+</table>
+
+<body>
+    <a asp-page-handler="CheckOut" >Checkout</a>
+</body>
