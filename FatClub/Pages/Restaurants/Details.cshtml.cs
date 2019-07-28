@@ -31,13 +31,14 @@ namespace FatClub.Pages.Restaurants
            // return null;
         //}
 
-        public async Task<IActionResult> OnGetAddToCartAsync(int FoodID, int? id)
+        public async Task<IActionResult> OnPostAddToCartAsync(int FoodID, int? id)
         {
             String currentUserName = User.Identity.Name;
+            string n = String.Format("{0}", Request.Form[String.Format("quantity-{0}",FoodID)]);
             
             var cartItem = new CartItem();
             cartItem.FoodID = FoodID;
-            cartItem.Quantity = 1;
+            cartItem.Quantity = Convert.ToInt32(n);
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUserName);
             cartItem.ShoppingCartID = cart.ShoppingCartID;
             _context.CartItems.Add(cartItem);
@@ -46,6 +47,8 @@ namespace FatClub.Pages.Restaurants
             
             return await OnGetAsync(id);
         }
+
+
         
 
         public async Task<IActionResult> OnGetAsync(int? id)

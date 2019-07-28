@@ -40,7 +40,7 @@ namespace FatClub.Pages.Restaurants
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "New restaurant created";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.Description = String.Format("New restaurant named {0} was created by {2}. Description is '{1}'", Restaurant.Name, Restaurant.RestaurantID, User.Identity.Name.ToString());
+            auditrecord.Description = String.Format("New restaurant named {0}, with ID {1} was created by {2}.", Restaurant.Name, Restaurant.RestaurantID, User.Identity.Name.ToString());
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);

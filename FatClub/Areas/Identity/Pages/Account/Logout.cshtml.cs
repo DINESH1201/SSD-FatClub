@@ -43,6 +43,15 @@ namespace FatClub.Areas.Identity.Pages.Account
             {
                 _context.CartItems.Remove(items);
             }
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Cart cleared";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            auditrecord.Description = String.Format("{0}'s cart has been cleared.", userID);
+            _context.AuditLogs.Add(auditrecord);
+
             await _context.SaveChangesAsync();
 
             await _signInManager.SignOutAsync();

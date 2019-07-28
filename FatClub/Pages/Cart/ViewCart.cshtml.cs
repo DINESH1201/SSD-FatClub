@@ -46,6 +46,15 @@ namespace FatClub.Pages.Cart
             {
                 _context.CartItems.Remove(items);
             }
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "User has checked out";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            auditrecord.Description = String.Format("{0} has made an order.", userID);
+            _context.AuditLogs.Add(auditrecord);
+
             await _context.SaveChangesAsync();
 
             
