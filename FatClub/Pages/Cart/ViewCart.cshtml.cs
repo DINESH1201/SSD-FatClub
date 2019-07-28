@@ -34,22 +34,25 @@ namespace FatClub.Pages.Cart
             return Page();
         }
 
-        public IList<CartItem> CartItem { get;set; }
-        public decimal Total { get; set; }
-        
+        public IList<CartItem> CartItem { get; set; }
+        public IList<Food> Food = new List<Food>();
+        public string Total { get; set; }
+
         public async Task OnGetAsync()
         {
             String currentUsername = User.Identity.Name;
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUsername);
             CartItem = await _context.CartItems.Where(item => item.ShoppingCartID == cart.ShoppingCartID).ToListAsync();
-            Total = 0;
-            foreach(CartItem items in CartItem)
+            decimal total = 0;
+            foreach (CartItem items in CartItem)
             {
                 Food food = await _context.Food.FirstOrDefaultAsync(foo => foo.FoodID == items.FoodID);
-                Total += items.Quantity * food.Price;
+                total += items.Quantity * food.Price;
+                Food.Add(food);
             }
-            Total += 0;
-            
+
+            Total = String.Format("${0}", total.ToString("#.##"));
+
         }
     }
 }
