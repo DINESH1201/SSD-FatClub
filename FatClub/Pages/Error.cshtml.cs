@@ -14,7 +14,7 @@ namespace FatClub.Pages
     {
         public string RequestId { get; set; }
 
-        
+
         public int iStatusCode { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }

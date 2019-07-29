@@ -94,7 +94,7 @@ namespace FatClub
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "FatClubCookie";
-                //  options.Cookie.Domain
+                // options.Cookie.Domain
                 // options.LoginPath = "/Account/Login";
                 // options.LogoutPath = "/Account/Logout";
                 // options.AccessDeniedPath = "/Account/AccessDenied";
@@ -110,8 +110,8 @@ namespace FatClub
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+        { 
+            /* if (env.IsDevelopment())
             {
                 //Remember to comment all this shit out when we actually submit
                 app.UseDeveloperExceptionPage();
@@ -122,7 +122,11 @@ namespace FatClub
             app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+            }*/
+            app.UseStatusCodePages("text/html", "<h1>Error!!!</h1> <h2>Status Code: {0}</h2>");
+            //app.UseStatusCodePagesWithReExecute("/Error");
+            app.UseExceptionHandler("/Error");
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
