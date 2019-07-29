@@ -5,14 +5,6 @@
     ViewData["Title"] = "Details";
 }
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script>
-    function AddToCart() {
-        $.get("/AddToCart", function (data) {
-        });
-    }
-</script>
-
 <h1>Details</h1>
 
 <div>
@@ -76,7 +68,11 @@
 
                         </p>
                     }
-                    <input formmethod="put" type="button" asp-route-FoodID="@item.FoodID" asp-page-handler="AddToCart"> value="Add to cart" />
+                    <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" asp-route-quantity="quantity" >
+                        <input name="quantity-@item.FoodID" type="number" min="1" max="5" required value="1" />
+                        <input type="submit" value="Add"/>
+                    </form>
+                    
                 </td>
             </tr>
         }
@@ -88,4 +84,4 @@
         <text><a asp-page="./Edit" asp-route-id="@Model.Restaurant.RestaurantID">Edit</a> |</text>
     }
     <a asp-page="./Index">Back to List</a>
-    </div>
+</div>

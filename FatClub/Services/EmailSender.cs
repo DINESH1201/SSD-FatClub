@@ -28,9 +28,9 @@ namespace FatClub.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("fatclub@noreply.com", "Fat Club"),
+                From = new EmailAddress("Fatclub@contoso.com", "Fat Club"),
                 Subject = subject,
-                PlainTextContent = message,
+                PlainTextContent = message, 
                 HtmlContent = message
             };
             msg.AddTo(new EmailAddress(email));

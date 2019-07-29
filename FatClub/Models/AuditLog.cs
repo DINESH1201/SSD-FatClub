@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FatClub.Models
 {
@@ -12,19 +13,23 @@ namespace FatClub.Models
         public int Audit_ID { get; set; }
 
         [Display(Name = "Action")]
+        [Column(TypeName = "varchar(50)")]
+        [RegularExpression(@"^[^<>-]*$")]
         public string AuditActionType { get; set; }
-        // Could be  Login Success /Failure/ Logout, Create, Delete, View, Update
-
+        
         [Display(Name = "Performed by")]
+        [Column(TypeName = "varchar(150)")]
+        [EmailAddress]
         public string Username { get; set; }
-        //Logged in user performing the action
 
         [Display(Name = "Date/Time Stamp")]
+        [Column(TypeName = "smalldatetime")]
         [DataType(DataType.DateTime)]
         public DateTime DateTimeStamp { get; set; }
-        //Time when the event occurred
         
         [Display(Name = "Description")]
+        [Column(TypeName ="varchar(150)")]
+        [RegularExpression(@"^[^<>-]*$")]
         public string Description { get; set; }
     }
 }

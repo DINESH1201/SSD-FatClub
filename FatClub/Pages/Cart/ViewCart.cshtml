@@ -1,0 +1,60 @@
+﻿@page
+@model FatClub.Pages.Cart.ViewCartModel
+
+@{
+    ViewData["Title"] = "ViewCart";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>My Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Food[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Food[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItem[0].Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.CartItem.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Food[i].Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Food[i].Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.CartItem[i].Quantity)
+                </td>
+                <td>
+                    <a asp-page-handler="DeleteFromCart" asp-route-id="@Model.CartItem[i].CartItemID">Remove from cart</a>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th>
+                Total
+            </th>
+            <th>
+                @Model.Total
+            </th>
+        </tr>
+    </tbody>
+</table>
+
+<body>
+    <a asp-page-handler="CheckOut" >Checkout</a>
+</body>

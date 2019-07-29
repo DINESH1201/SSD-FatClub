@@ -49,7 +49,8 @@ namespace FatClub
             // using Microsoft.AspNetCore.Identity.UI.Services;
             // using WebPWrecover.Services;
             services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.Configure<AuthMessageSenderOptions>(options =>
+            Configuration.GetSection("SendGridEmailSettings").Bind(options));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -75,7 +76,7 @@ namespace FatClub
             {
                 // Password settings
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 5;
+                options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
@@ -93,7 +94,7 @@ namespace FatClub
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "FatClubCookie";
-                //  options.Cookie.Domain=
+                //  options.Cookie.Domain
                 // options.LoginPath = "/Account/Login";
                 // options.LogoutPath = "/Account/Logout";
                 // options.AccessDeniedPath = "/Account/AccessDenied";
@@ -112,12 +113,13 @@ namespace FatClub
         {
             if (env.IsDevelopment())
             {
-                //Remember to remove this when we actually submit
+                //Remember to comment all this shit out when we actually submit
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+            app.UseStatusCodePages("text/html", "<h1>Status code page</h1> <h2>Status Code: {0}</h2>");
+            app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

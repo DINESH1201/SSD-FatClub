@@ -14,7 +14,9 @@ namespace FatClub.Models
         public string FirstName { get; set; }
         [StringLength(50)]
         public string LastName { get; set; }
+        public int CartID { get; set; }
         public virtual ShoppingCart ShoppingCart { get; set; }
+
 
     }
 
