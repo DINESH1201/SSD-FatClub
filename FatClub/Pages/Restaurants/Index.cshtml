@@ -37,10 +37,14 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Restaurant[0].Genre)
                     </th>
-                    <th></th>
+                    <th>
+                        Rating
+                    </th>
                 </tr>
             </thead>
             <tbody>
+                @for (var i = 0; i < Model.RatingList.Count(); i++)
+                {
                 @foreach (var item in Model.Restaurant)
                 {
                     <tr>
@@ -50,18 +54,19 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Genre)
                         </td>
-
-
                         <td>
-
-                            <a asp-page="./Details" asp-route-id="@item.RestaurantID">Details</a> 
+                            @Html.DisplayFor(model => model.RatingList[i])
+                        </td>
+                        <td>
+                            <a asp-page="./Details" asp-route-id="@item.RestaurantID">Details</a>
                             @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
-                            { 
+                            {
                                 <text>|</text> <a asp-page="./Delete" asp-route-id="@item.RestaurantID">Delete</a>
                             }
-                            </td>
-
+                        </td>
+                        count+=1
                     </tr>
+                }
                 }
             </tbody>
         </table>
