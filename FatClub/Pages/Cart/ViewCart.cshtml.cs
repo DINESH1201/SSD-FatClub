@@ -61,9 +61,12 @@ namespace FatClub.Pages.Cart
             return RedirectToPage("./Checkout");
         }
 
+
         public IList<CartItem> CartItem { get; set; }
         public IList<Food> Food = new List<Food>();
         public string Total { get; set; }
+
+
 
         public async Task OnGetAsync()
         {

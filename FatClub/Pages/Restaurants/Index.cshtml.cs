@@ -40,10 +40,16 @@ namespace FatClub.Pages.Restaurants
             {
                 ratinglist = ratinglist.Where(rl => rl.RestaurantID == r.RestaurantID);
                 int calculated_rating = 0;
-                 
-                foreach (var rl in ratinglist)
+                if (ratinglist.Count() == 0)
                 {
-                    calculated_rating = rl.Star + calculated_rating;
+                    // Do Absolutely Nothing
+                }
+                else
+                {
+                    foreach (var rl in ratinglist)
+                    {
+                        calculated_rating = rl.Star + calculated_rating;
+                    }
                 }
                 calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
                 RatingList.Add(calculated_rating);
