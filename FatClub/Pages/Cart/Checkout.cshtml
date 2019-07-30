@@ -4,7 +4,26 @@
     ViewData["Title"] = "Checkout";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="jquery.star-rating-svg.js"></script>
+<link rel="stylesheet" type="text/css" href="star-rating-svg.css">
 <h1>Checkout Successful</h1>
 <p>Your order has been received. Please wait at your current location and a driver will deliver your order to you.</p>
-<input name="rating" />
+<form method="post">
+    <div class="my-rating" onchange="ChangeValue();"></div>
+    <input id="star-rating" name="starrating" style="display:none;" value="0">
+    <input type="submit">
+    <script>
+        $(".my-rating").starRating({
+            starSize: 40,
+            totalStars: 5,
+            useFullStars: true,
+        });
+        function ChangeValue() {
+            var ratingno = $('my-rating').starRating('getRating');
+            document.getElementById("star-rating").value = ratingno;
+        }
+    </script>
+    <input>
+</form>
+
