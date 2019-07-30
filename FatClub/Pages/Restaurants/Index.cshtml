@@ -3,6 +3,24 @@
 
 @{
     ViewData["Title"] = "Index";
+    foreach (var r in Model.Restaurant)
+    {
+        ratinglist = Model.Rating.Where(rl => rl.RestaurantID == r.RestaurantID);
+        int calculated_rating = 0;
+        if (ratinglist.Count() == 0)
+        {
+            // Do Absolutely Nothing
+        }
+        else
+        {
+            foreach (var rl in ratinglist)
+            {
+                calculated_rating = rl.Star + calculated_rating;
+            }
+            calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
+        }
+        (ViewData[RatingList] as IList<int>).Add(calculated_rating);
+    }
 }
 
 

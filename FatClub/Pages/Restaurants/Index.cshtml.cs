@@ -35,8 +35,10 @@ namespace FatClub.Pages.Restaurants
             {
                 restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
             }
-            Restaurant = await _context.Restaurant.ToListAsync();
+            restaurants = await _context.Restaurant.ToListAsync();
             var ratinglist = from r in _context.Rating select r;
+            ratinglist = await _context.Rating.ToListAsync();
+
             foreach (var r in restaurants)
             {
                 ratinglist = ratinglist.Where(rl => rl.RestaurantID == r.RestaurantID);
