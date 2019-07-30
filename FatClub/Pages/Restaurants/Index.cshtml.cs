@@ -20,11 +20,14 @@ namespace FatClub.Pages.Restaurants
         }
 
         public IList<Restaurant> Restaurant { get;set; }
+        public IList<Rating> Rating { get; set; }
+        public IList<int> RatingList { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string searchString { get; set; }
 
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id)
         {
             var restaurants = from r in _context.Restaurant select r;
             if (!string.IsNullOrEmpty(searchString))
@@ -32,7 +35,19 @@ namespace FatClub.Pages.Restaurants
                 restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
             }
             Restaurant = await _context.Restaurant.ToListAsync();
-       
+            var ratinglist = from r in _context.Rating select r;
+            foreach (var r in restaurants)
+            {
+                ratinglist = ratinglist.Where(rl => rl.RestaurantID == r.RestaurantID);
+                int calculated_rating = 0;
+                foreach (var rl in ratinglist)
+                {
+                    calculated_rating = rl.Star + calculated_rating;
+                }
+                calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
+                RatingList.Add(calculated_rating);
+            }
+            Rating = await ratinglist.ToListAsync();
         }
     }
 }
