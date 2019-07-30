@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 0; i < Model.RatingList.Count(); i++)
+                @for (var i = 0; i < (ViewData["RatingList"] as IList<int>).Count(); i++)
                 {
                 @foreach (var item in Model.Restaurant)
                 {

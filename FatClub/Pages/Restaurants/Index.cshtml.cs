@@ -21,13 +21,14 @@ namespace FatClub.Pages.Restaurants
 
         public IList<Restaurant> Restaurant { get;set; }
         public IList<Rating> Rating { get; set; }
+        [ViewData]
         public IList<int> RatingList { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string searchString { get; set; }
 
 
-        public async Task OnGetAsync(int? id)
+        public async Task OnGetAsync(IList<int> RatingList)
         {
             var restaurants = from r in _context.Restaurant select r;
             if (!string.IsNullOrEmpty(searchString))
@@ -50,11 +51,10 @@ namespace FatClub.Pages.Restaurants
                     {
                         calculated_rating = rl.Star + calculated_rating;
                     }
+                    calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
                 }
-                calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
                 RatingList.Add(calculated_rating);
             }
-            Rating = await ratinglist.ToListAsync();
-        }
+        } 
     }
 }
