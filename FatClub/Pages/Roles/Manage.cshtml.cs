@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FatClub.Pages.Roles
 {
-    [Authorize (Roles = "Admin" )]
+   [Authorize (Roles = "Admin" )]
     public class ManageModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
