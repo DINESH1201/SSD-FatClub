@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FatClub.Models;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace FatClub.Pages.Cart
 {
@@ -14,12 +14,12 @@ namespace FatClub.Pages.Cart
     public class CheckoutModel : PageModel
     {
         private readonly FatClub.Models.FatClubContext _context;
-        public ViewCartModel(FatClub.Models.FatClubContext context)
+        public CheckoutModel(FatClub.Models.FatClubContext context)
         {
             _context = context;
         }
        
-        public async OnPostAsync()
+        public async Task OnPostAsync()
         {  
             var StarRating = Request.Form["starrating"];
             String currentUsername = User.Identity.Name;
@@ -28,7 +28,7 @@ namespace FatClub.Pages.Cart
             Food food = await _context.Food.FirstOrDefaultAsync(item => item.FoodID == cartitem.FoodID);
             Restaurant restaurant = await _context.Restaurant.FirstOrDefaultAsync(item => item.RestaurantID == food.RestaurantID);
 
-            var newrating = new Rating() { RestaurantID = restaurant.RestaurantID , Star = StarRating };
+            var newrating = new Rating() { RestaurantID = restaurant.RestaurantID , Star = Convert.ToInt32(StarRating) };
             _context.Rating.Add(newrating);
         }
 

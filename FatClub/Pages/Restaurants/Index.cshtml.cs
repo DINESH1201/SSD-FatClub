@@ -40,6 +40,7 @@ namespace FatClub.Pages.Restaurants
             {
                 ratinglist = ratinglist.Where(rl => rl.RestaurantID == r.RestaurantID);
                 int calculated_rating = 0;
+                 
                 foreach (var rl in ratinglist)
                 {
                     calculated_rating = rl.Star + calculated_rating;

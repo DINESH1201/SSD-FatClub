@@ -7,10 +7,10 @@
 <h1 class="text-danger">Oh no!</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
-<!--@if (Model.ShowRequestId)
+<!--@@if (Model.ShowRequestId)
 {
     <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        <strong>Request ID:</strong> <code>@@Model.RequestId</code>
     </p>
 }-->
 
@@ -20,10 +20,9 @@
 <p>
     Error Message : @Model.Message
 </p>
-<!--<p>
-    Stack Trace : @@Model.StackTrace
-</p>-->
-<!--
+<p>
+    Stack Trace : @Model.StackTrace
+</p>
 <h3>Development Mode</h3>
 <p>
     Swapping to the <strong>Development</strong> environment displays detailed information about the error that occurred.
@@ -34,4 +33,4 @@
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
 </p>
--->
+
