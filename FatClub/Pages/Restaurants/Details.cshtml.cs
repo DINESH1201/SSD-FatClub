@@ -36,6 +36,8 @@ namespace FatClub.Pages.Restaurants
             String currentUserName = User.Identity.Name;
             string n = String.Format("{0}", Request.Form[String.Format("quantity-{0}",FoodID)]);
             
+
+
             var cartItem = new CartItem();
             cartItem.FoodID = FoodID;
             cartItem.Quantity = Convert.ToInt32(n);

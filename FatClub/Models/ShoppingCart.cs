@@ -16,6 +16,9 @@ namespace FatClub.Models
         [ForeignKey("ApplicationUser")]
         public string UserName { get; set; }
 
+        [ForeignKey("Restaurant")]
+        public int? RestaurantID { get; set; }
+
 //        public virtual ApplicationUser ApplicationUser { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; }
