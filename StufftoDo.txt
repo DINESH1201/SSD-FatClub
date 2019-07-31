@@ -1,0 +1,6 @@
+Make ShoppingCart tie to one RestaurantID
+Make checks onselect new REstaurantID/On Select different food to change ShoppingCArt.RestaurantID
+"You can only order from one Restaurant"
+CartItem is clear OnCheckOutInViewCart
+Rating is done in checkout page
+
