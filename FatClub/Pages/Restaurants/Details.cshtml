@@ -7,6 +7,8 @@
 
 <h1>Details</h1>
 
+
+
 <div>
     <h4>Restaurant</h4>
     <hr />
@@ -68,9 +70,9 @@
 
                         </p>
                     }
-                    <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" asp-route-quantity="quantity" >
+                    <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" onsubmit="showAlert()">
                         <input name="quantity-@item.FoodID" type="number" min="1" max="5" required value="1" />
-                        <input type="submit" value="Add"/>
+                        <input type="submit" value="Add" onclick="showAlert()"/>
                     </form>
                     
                 </td>
@@ -85,3 +87,17 @@
     }
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<script type="text/javascript">
+    function showAlert() {
+        if (@Model.MsgBoxString) {
+            alert("Your food as been added to the cart");
+        }
+        else {
+            alert("You can only order food from 1 restaurant. Sorry for the inconvenience");
+        }
+    }
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

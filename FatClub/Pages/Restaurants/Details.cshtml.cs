@@ -23,7 +23,7 @@ namespace FatClub.Pages.Restaurants
 
         public Restaurant Restaurant { get; set; }
         public IList<Food> Food { get; set; }
-
+        public bool MsgBoxString { get; set; }
        // public async Task<IActionResult> OnGetAddToCart(int FoodID)
         //{
 
@@ -34,25 +34,45 @@ namespace FatClub.Pages.Restaurants
         public async Task<IActionResult> OnPostAddToCartAsync(int FoodID, int? id)
         {
             String currentUserName = User.Identity.Name;
-            string n = String.Format("{0}", Request.Form[String.Format("quantity-{0}",FoodID)]);
-            
-
-
-            var cartItem = new CartItem();
-            cartItem.FoodID = FoodID;
-            cartItem.Quantity = Convert.ToInt32(n);
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUserName);
-            cartItem.ShoppingCartID = cart.ShoppingCartID;
-            _context.CartItems.Add(cartItem);
+
+            IList<CartItem> cartItems = new List<CartItem>();
+            cartItems = await _context.CartItems.Where(m => m.ShoppingCartID == cart.ShoppingCartID).ToListAsync();
+            
+            Food food = _context.Food.FirstOrDefault(m => m.FoodID == FoodID);
+
+            if (cartItems.Count == 0)
+            {
+                cart.RestaurantID = food.RestaurantID;
+                _context.ShoppingCarts.Update(cart);
+
+            }
+
+
+            if (cart.RestaurantID == food.RestaurantID)
+            {
+                string n = String.Format("{0}", Request.Form[String.Format("quantity-{0}", FoodID)]);
+                var cartItem = new CartItem();
+                cartItem.FoodID = FoodID;
+                cartItem.Quantity = Convert.ToInt32(n);
+                cartItem.ShoppingCartID = cart.ShoppingCartID;
+                _context.CartItems.Add(cartItem);
+                MsgBoxString = true;//"Your food as been added to the cart";
+            }
+            else
+            {
+                MsgBoxString = false; //"You can only order food from 1 restaurant. Sorry for the inconvenience";
+                
+                
+            }
+
 
             await _context.SaveChangesAsync();
             
             return await OnGetAsync(id);
+
         }
-
-
         
-
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
