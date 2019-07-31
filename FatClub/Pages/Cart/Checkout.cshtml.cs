@@ -24,14 +24,12 @@ namespace FatClub.Pages.Cart
             var StarRating = Request.Form["starrating"];
             String currentUsername = User.Identity.Name;
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUsername);
-            CartItem cartitem = await _context.CartItems.FirstOrDefaultAsync(item => item.ShoppingCartID == cart.ShoppingCartID);
-            Food food = await _context.Food.FirstOrDefaultAsync(item => item.FoodID == cartitem.FoodID);
-            Restaurant restaurant = await _context.Restaurant.FirstOrDefaultAsync(item => item.RestaurantID == food.RestaurantID);
+            Restaurant restaurant = await _context.Restaurant.FirstOrDefaultAsync(item => item.RestaurantID == cart.RestaurantID);
 
             var newrating = new Rating() { RestaurantID = restaurant.RestaurantID , Star = Convert.ToInt32(StarRating) };
             _context.Rating.Add(newrating);
         }
 
-
+        
     }
 }
