@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FatClub.Migrations
 {
-    public partial class AddIdentitySchema : Migration
+    public partial class Rezero : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,10 @@ namespace FatClub.Migrations
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 150, nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    IPAddress = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,9 +44,8 @@ namespace FatClub.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    MobileNo = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,17 +53,47 @@ namespace FatClub.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Food",
+                name: "AuditLogs",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Audit_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false)
+                    AuditActionType = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Username = table.Column<string>(type: "varchar(150)", nullable: true),
+                    DateTimeStamp = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    Description = table.Column<string>(type: "varchar(150)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Food", x => x.ID);
+                    table.PrimaryKey("PK_AuditLogs", x => x.Audit_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Restaurant",
+                columns: table => new
+                {
+                    RestaurantID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Genre = table.Column<string>(maxLength: 50, nullable: true),
+                    Description = table.Column<string>(maxLength: 150, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurant", x => x.RestaurantID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    ShoppingCartID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.ShoppingCartID);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,6 +202,68 @@ namespace FatClub.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Food",
+                columns: table => new
+                {
+                    FoodID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
+                    RestaurantID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Food", x => x.FoodID);
+                    table.ForeignKey(
+                        name: "FK_Food_Restaurant_RestaurantID",
+                        column: x => x.RestaurantID,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rating",
+                columns: table => new
+                {
+                    RatingID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Star = table.Column<int>(nullable: false),
+                    RestaurantID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rating", x => x.RatingID);
+                    table.ForeignKey(
+                        name: "FK_Rating_Restaurant_RestaurantID",
+                        column: x => x.RestaurantID,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    CartItemID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Quantity = table.Column<int>(nullable: false),
+                    FoodID = table.Column<int>(nullable: false),
+                    ShoppingCartID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.CartItemID);
+                    table.ForeignKey(
+                        name: "FK_CartItems_ShoppingCarts_ShoppingCartID",
+                        column: x => x.ShoppingCartID,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "ShoppingCartID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -208,6 +302,21 @@ namespace FatClub.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_ShoppingCartID",
+                table: "CartItems",
+                column: "ShoppingCartID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Food_RestaurantID",
+                table: "Food",
+                column: "RestaurantID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rating_RestaurantID",
+                table: "Rating",
+                column: "RestaurantID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -228,13 +337,28 @@ namespace FatClub.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AuditLogs");
+
+            migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
                 name: "Food");
+
+            migrationBuilder.DropTable(
+                name: "Rating");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
+
+            migrationBuilder.DropTable(
+                name: "Restaurant");
         }
     }
 }

@@ -57,8 +57,6 @@ namespace FatClub.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("CartID");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -91,8 +89,6 @@ namespace FatClub.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<int?>("ShoppingCartID");
-
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -107,8 +103,6 @@ namespace FatClub.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("ShoppingCartID");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -310,13 +304,6 @@ namespace FatClub.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("FatClub.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("FatClub.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartID");
                 });
 
             modelBuilder.Entity("FatClub.Models.CartItem", b =>

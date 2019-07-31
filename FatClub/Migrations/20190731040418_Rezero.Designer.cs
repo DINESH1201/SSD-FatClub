@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FatClub.Migrations
 {
     [DbContext(typeof(FatClubContext))]
-    [Migration("20190717072455_AddLogs")]
-    partial class AddLogs
+    [Migration("20190731040418_Rezero")]
+    partial class Rezero
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,8 @@ namespace FatClub.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasMaxLength(150);
 
                     b.Property<string>("IPAddress");
 
@@ -66,15 +67,15 @@ namespace FatClub.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("MobileNo");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -114,34 +115,111 @@ namespace FatClub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuditActionType");
+                    b.Property<string>("AuditActionType")
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("DateTimeStamp");
+                    b.Property<DateTime>("DateTimeStamp")
+                        .HasColumnType("smalldatetime");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(150)");
 
-                    b.Property<int>("FoodIDField");
-
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Audit_ID");
 
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("FatClub.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FoodID");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("ShoppingCartID");
+
+                    b.HasKey("CartItemID");
+
+                    b.HasIndex("ShoppingCartID");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("FatClub.Models.Food", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("FoodID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
 
-                    b.HasKey("ID");
+                    b.Property<int>("RestaurantID");
+
+                    b.HasKey("FoodID");
+
+                    b.HasIndex("RestaurantID");
 
                     b.ToTable("Food");
+                });
+
+            modelBuilder.Entity("FatClub.Models.Rating", b =>
+                {
+                    b.Property<int>("RatingID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RestaurantID");
+
+                    b.Property<int>("Star");
+
+                    b.HasKey("RatingID");
+
+                    b.HasIndex("RestaurantID");
+
+                    b.ToTable("Rating");
+                });
+
+            modelBuilder.Entity("FatClub.Models.Restaurant", b =>
+                {
+                    b.Property<int>("RestaurantID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Genre")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.HasKey("RestaurantID");
+
+                    b.ToTable("Restaurant");
+                });
+
+            modelBuilder.Entity("FatClub.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("ShoppingCartID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserName")
+                        .IsRequired();
+
+                    b.HasKey("ShoppingCartID");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -228,6 +306,30 @@ namespace FatClub.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FatClub.Models.CartItem", b =>
+                {
+                    b.HasOne("FatClub.Models.ShoppingCart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ShoppingCartID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FatClub.Models.Food", b =>
+                {
+                    b.HasOne("FatClub.Models.Restaurant")
+                        .WithMany("Foods")
+                        .HasForeignKey("RestaurantID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FatClub.Models.Rating", b =>
+                {
+                    b.HasOne("FatClub.Models.Restaurant")
+                        .WithMany("Ratings")
+                        .HasForeignKey("RestaurantID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

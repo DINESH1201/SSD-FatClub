@@ -3,24 +3,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    foreach (var r in Model.Restaurant)
-    {
-        ratinglist = Model.Rating.Where(rl => rl.RestaurantID == r.RestaurantID);
-        int calculated_rating = 0;
-        if (ratinglist.Count() == 0)
-        {
-            // Do Absolutely Nothing
-        }
-        else
-        {
-            foreach (var rl in ratinglist)
-            {
-                calculated_rating = rl.Star + calculated_rating;
-            }
-            calculated_rating = Convert.ToInt32(calculated_rating / ratinglist.Count());
-        }
-        (ViewData[RatingList] as IList<int>).Add(calculated_rating);
-    }
 }
 
 
@@ -61,31 +43,52 @@
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 0; i < (ViewData["RatingList"] as IList<int>).Count(); i++)
-                {
-                @foreach (var item in Model.Restaurant)
+                @for (int i = 0; i < Model.Restaurant.Count; i++)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => Model.Restaurant[i].Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Genre)
+                            @Html.DisplayFor(modelItem => Model.Restaurant[i].Genre)
                         </td>
                         <td>
-                            @Html.DisplayFor(model => model.RatingList[i])
+                            @Html.DisplayFor(model => Model.RatingList[i])
                         </td>
                         <td>
-                            <a asp-page="./Details" asp-route-id="@item.RestaurantID">Details</a>
+                            <a asp-page="./Details" asp-route-id="@Model.Restaurant[i].RestaurantID">Details</a>
                             @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                             {
-                                <text>|</text> <a asp-page="./Delete" asp-route-id="@item.RestaurantID">Delete</a>
+                                <text>|</text> <a asp-page="./Delete" asp-route-id="@Model.Restaurant[i].RestaurantID">Delete</a>
                             }
                         </td>
-                        count+=1
                     </tr>
                 }
+                <!--@for (var i = 0; i < (ViewData["RatingList"] as IList<int>).Count(); i++)
+    {
+    @foreach (var item in Model.Restaurant)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.RatingList[i])
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.RestaurantID">Details</a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                {
+                    <text>|</text> <a asp-page="./Delete" asp-route-id="@item.RestaurantID">Delete</a>
                 }
+            </td>
+            count+=1
+        </tr>
+    }
+    }-->
             </tbody>
         </table>
     </body>

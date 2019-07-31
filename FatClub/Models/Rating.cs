@@ -10,7 +10,7 @@ namespace FatClub.Models
     public class Rating
     {   [Key]
         public int RatingID { get ; set ; }
-        [Range(0, 5, ErrorMessage = "Please enter valid rating between 0-5")]
+        //[Range(0, 5, ErrorMessage = "Please enter valid rating between 0-5")]
         public int Star { get; set; }
         [Required]
         [ForeignKey("Restaurant")]
