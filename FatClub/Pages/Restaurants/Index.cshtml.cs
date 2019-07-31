@@ -44,7 +44,6 @@ namespace FatClub.Pages.Restaurants
             */
             foreach (Restaurant r in restaurants)
             {
-                
                 Rating = await _context.Rating.Where(rl => rl.RestaurantID == r.RestaurantID).ToListAsync();
                 int calculated_rating = 0;
                 if (Rating.Count() == 0)
