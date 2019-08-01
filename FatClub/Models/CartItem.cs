@@ -11,7 +11,8 @@ namespace FatClub.Models
     {
         [Key]
         public int CartItemID { get; set; }
-       
+
+        [Range(1, 5)]
         public int Quantity { get; set; }
 
         [Required]
