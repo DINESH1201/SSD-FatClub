@@ -28,6 +28,16 @@ namespace FatClub.Pages.Cart
 
             var newrating = new Rating() { RestaurantID = restaurant.RestaurantID , Star = Convert.ToInt32(StarRating) };
             _context.Rating.Add(newrating);
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Rating added";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("{0} has added a rating to {1}", currentUsername, restaurant.Name);
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
+
+            await _context.SaveChangesAsync();
         }
 
         
