@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.RegularExpressions;
 namespace FatClub.Pages.Restaurants
 {
     [Authorize]
@@ -33,6 +33,7 @@ namespace FatClub.Pages.Restaurants
         {
             
             var restaurants = from r in _context.Restaurant select r;
+            Regex.Replace(searchString, @"[^0-9a-zA-Z]+", "");
             if (!string.IsNullOrEmpty(searchString))
             {
                 restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
