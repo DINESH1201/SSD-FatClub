@@ -38,7 +38,7 @@
     {
         <a asp-page="AddFood" asp-route-id="@Model.Restaurant.RestaurantID">Create New</a>
     }
-    </p>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -70,11 +70,12 @@
 
                         </p>
                     }
-                    <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" onsubmit="showAlert()">
+                    <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" >
                         <input name="quantity-@item.FoodID" type="number" min="1" max="5" required value="1" />
-                        <input type="submit" value="Add" onclick="showAlert()"/>
+
+                        <input id="button" type="submit" value="Add" />
                     </form>
-                    
+
                 </td>
             </tr>
         }
@@ -89,15 +90,20 @@
 </div>
 
 <script type="text/javascript">
-    function showAlert() {
-        if (@Model.MsgBoxString) {
-            alert("Your food as been added to the cart");
-        }
-        else {
-            alert("You can only order food from 1 restaurant. Sorry for the inconvenience");
-        }
-    }
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
 </script>
+@if (ViewData.ContainsKey("output"))
+{
+
+    string str = ViewData["output"].ToString();
+    if (str == "Your food as been added to the cart")
+    {
+        <script type="text/javascript">alert("Your food as been added to the cart")</script>
+    }
+    else
+    {
+        <script type="text/javascript">alert("You can only order food from 1 restaurant. Sorry for the inconvenience.")</script>
+    }
+}

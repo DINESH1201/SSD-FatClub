@@ -110,7 +110,7 @@ namespace FatClub
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        { 
+        {
             /*if (env.IsDevelopment())
             {
                 //Remember to comment all this shit out when we actually submit
@@ -123,7 +123,8 @@ namespace FatClub
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }*/
-            app.UseStatusCodePages("text/html", "<h1>Error!!!</h1> <h2>Status Code: {0}</h2>");
+            //app.UseStatusCodePages("text/html", "<h1>Error!!!</h1> <h2>Status Code: {0}</h2>");
+            app.UseStatusCodePagesWithReExecute("/Oops");
             //app.UseStatusCodePagesWithReExecute("/Error");
             app.UseExceptionHandler("/Error");
 
