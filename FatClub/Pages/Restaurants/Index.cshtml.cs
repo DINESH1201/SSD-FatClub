@@ -33,9 +33,9 @@ namespace FatClub.Pages.Restaurants
         {
             
             var restaurants = from r in _context.Restaurant select r;
-            Regex.Replace(searchString, @"[^0-9a-zA-Z]+", "");
             if (!string.IsNullOrEmpty(searchString))
             {
+                searchString = Regex.Replace(searchString, @"[^0-9a-zA-Z]+", "");
                 restaurants = restaurants.Where(r => r.Genre.Contains(searchString) || r.Name.Contains(searchString));
             }
             Restaurant = await restaurants.ToListAsync();
