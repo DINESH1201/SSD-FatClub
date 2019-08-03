@@ -14,10 +14,12 @@ namespace FatClub.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
+        public ConfirmEmailModel(UserManager<ApplicationUser> userManager, FatClub.Models.FatClubContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
@@ -35,6 +37,14 @@ namespace FatClub.Areas.Identity.Pages.Account
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
             IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "User Email Confirmed";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("User with ID {0} has confirmed his email.", user.UserName);
+            auditrecord.Username = user.UserName;
+            //auditrecord.Username = User.Identity.Name.ToString();
+            _context.AuditLogs.Add(auditrecord);
+            await _context.SaveChangesAsync();
 
             if (roleResult.Succeeded)
             {

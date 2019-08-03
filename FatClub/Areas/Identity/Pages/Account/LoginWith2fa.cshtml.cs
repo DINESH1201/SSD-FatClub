@@ -17,11 +17,13 @@ namespace FatClub.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginWith2faModel> _logger;
+        private readonly FatClub.Models.FatClubContext _context;
 
-        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2faModel> logger, FatClub.Models.FatClubContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -81,11 +83,27 @@ namespace FatClub.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "User Login";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("User with ID {0} logged in with 2FA", user.UserName);
+                auditrecord.Username = user.UserName;
+                //auditrecord.Username = User.Identity.Name.ToString();
+                _context.AuditLogs.Add(auditrecord);
+                await _context.SaveChangesAsync();
                 return LocalRedirect(returnUrl);
             }
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "User Locked out";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("User with ID {0} has been locked out during 2FA", user.UserName);
+                auditrecord.Username = user.UserName;
+                //auditrecord.Username = User.Identity.Name.ToString();
+                _context.AuditLogs.Add(auditrecord);
+                await _context.SaveChangesAsync();
                 return RedirectToPage("./Lockout");
             }
             else
