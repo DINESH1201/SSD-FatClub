@@ -26,3 +26,12 @@
         });
     </script>
 </form>
+@if (ViewData.ContainsKey("output"))
+{
+
+    string str = ViewData["output"].ToString();
+    if (str == "rated")
+    {
+        <script type="text/javascript">alert("You have already rated once for this order")</script>
+    }
+}

@@ -45,6 +45,10 @@ namespace FatClub.Pages.Cart
             if (CartItem.Count > 0) {   
                 var neworder = new Order() { UserName = currentUsername, RestaurantID = cart.RestaurantID, RatingDone = false };
                 _context.Order.Add(neworder);
+                await _context.SaveChangesAsync();
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUsername);
+                user.LatestOrder = neworder.OrderID;
+
                 foreach(CartItem items in CartItem)
                 {
                     var orderitem = new OrderItem() { OrderID = neworder.OrderID, Quantity = items.Quantity, FoodID = items.FoodID };
