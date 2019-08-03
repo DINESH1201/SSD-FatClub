@@ -53,7 +53,7 @@ namespace FatClub.Pages.Restaurants
                 var auditrecord = new AuditLog();
                 auditrecord.AuditActionType = "Restaurant Deleted";
                 auditrecord.DateTimeStamp = DateTime.Now;
-                auditrecord.Description = String.Format("{0} was deleted by {1}.", Restaurant.Name, User.Identity.Name.ToString());
+                auditrecord.Description = String.Format("{0} was deleted.", Restaurant.Name);
                 var userID = User.Identity.Name.ToString();
                 auditrecord.Username = userID;
                 _context.AuditLogs.Add(auditrecord);

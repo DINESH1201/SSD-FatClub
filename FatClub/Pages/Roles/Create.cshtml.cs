@@ -42,7 +42,7 @@ namespace FatClub.Pages.Roles
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "New Role Created";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.Description = String.Format("Role named {0} with ID {1} was created.",ApplicationRole.Name, ApplicationRole.Id);
+            auditrecord.Description = String.Format("Role named {0} ({1}) was created.",ApplicationRole.Name, ApplicationRole.Description);
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);

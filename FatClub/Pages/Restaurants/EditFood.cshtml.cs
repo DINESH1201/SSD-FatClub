@@ -25,14 +25,14 @@ namespace FatClub.Pages.Restaurants
         public Food Food { get; set; }
         private Restaurant Restaurant { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, int? FoodID)
         {
-            if (id == null)
+            if (FoodID == null)
             {
                 return NotFound();
             }
 
-            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+            Food = await _context.Food.FirstOrDefaultAsync(m => m.FoodID == FoodID);
 
             if (Food == null)
             {
@@ -41,12 +41,21 @@ namespace FatClub.Pages.Restaurants
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int? FoodID, int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "Restaurant Edited";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("{0} was edited.", Restaurant.Name);
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
 
             _context.Attach(Food).State = EntityState.Modified;
 
@@ -65,13 +74,6 @@ namespace FatClub.Pages.Restaurants
                     throw;
                 }
             }
-            var auditrecord = new AuditLog();
-            auditrecord.AuditActionType = "Food deleted";
-            auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.Description = String.Format("{0} in {2} was edited by by {1}.", Food.Name, User.Identity.Name.ToString(), Restaurant.Name);
-            var userID = User.Identity.Name.ToString();
-            auditrecord.Username = userID;
-            _context.AuditLogs.Add(auditrecord);
 
             Response.Redirect("./Details?id=" + id);
             return null;

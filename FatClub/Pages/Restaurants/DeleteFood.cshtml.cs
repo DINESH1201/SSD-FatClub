@@ -24,14 +24,14 @@ namespace FatClub.Pages.Restaurants
         public Food Food { get; set; }
         private Restaurant Restaurant { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, int? FoodID)
         {
-            if (id == null)
+            if (FoodID == null)
             {
                 return NotFound();
             }
 
-            Restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.RestaurantID == id);
+            Food = await _context.Food.FirstOrDefaultAsync(m => m.FoodID == FoodID);
 
             if (Food == null)
             {
@@ -40,14 +40,14 @@ namespace FatClub.Pages.Restaurants
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int? id, int? FoodID)
         {
-            if (id == null)
+            if (FoodID == null)
             {
                 return NotFound();
             }
 
-            Food = await _context.Food.FindAsync(id);
+            Food = await _context.Food.FindAsync(FoodID);
 
             if (Food != null)
             {
@@ -56,7 +56,7 @@ namespace FatClub.Pages.Restaurants
                 var auditrecord = new AuditLog();
                 auditrecord.AuditActionType = "Food deleted";
                 auditrecord.DateTimeStamp = DateTime.Now;
-                auditrecord.Description = String.Format("{0} was deleted from {2} by {1}.", Food.Name, User.Identity.Name.ToString(),Restaurant.Name);
+                auditrecord.Description = String.Format("{0} was deleted from {1}.", Food.Name, Restaurant.Name);
                 var userID = User.Identity.Name.ToString();
                 auditrecord.Username = userID;
                 _context.AuditLogs.Add(auditrecord);

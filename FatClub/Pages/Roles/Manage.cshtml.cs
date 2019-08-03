@@ -91,7 +91,7 @@ namespace FatClub.Pages.Roles
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "User Role Updated";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.Description = String.Format("{0} has a {1} role.", AppUser, AppRole.Name);
+            auditrecord.Description = String.Format("{0} has been given {1} role.", AppUser, AppRole.Name);
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);

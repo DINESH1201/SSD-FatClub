@@ -49,18 +49,20 @@ namespace FatClub.Pages.Roles
 
             ApplicationRole appRole = await _roleManager.FindByIdAsync(ApplicationRole.Id);
 
-            appRole.Id = ApplicationRole.Id;
-            appRole.Name = ApplicationRole.Name;
-            appRole.Description = ApplicationRole.Description;
-
             var auditrecord = new AuditLog();
             auditrecord.AuditActionType = "Role Updated";
             auditrecord.DateTimeStamp = DateTime.Now;
-            auditrecord.Description = String.Format("Role named {1} with ID {0} was deleted.",ApplicationRole.Id, ApplicationRole.Name);
+            auditrecord.Description = String.Format("{0} ({1}) changed to {2} ({3})", appRole.Name, appRole.Description ,ApplicationRole.Name, ApplicationRole.Description);
             var userID = User.Identity.Name.ToString();
             auditrecord.Username = userID;
             _context.AuditLogs.Add(auditrecord);
             await _context.SaveChangesAsync();
+
+            appRole.Id = ApplicationRole.Id;
+            appRole.Name = ApplicationRole.Name;
+            appRole.Description = ApplicationRole.Description;
+
+            
 
             IdentityResult roleRuslt = await _roleManager.UpdateAsync(appRole);
 
