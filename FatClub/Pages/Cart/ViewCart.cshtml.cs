@@ -42,9 +42,13 @@ namespace FatClub.Pages.Cart
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUsername);
             CartItem = await _context.CartItems.Where(item => item.ShoppingCartID == cart.ShoppingCartID).ToListAsync();
 
-            if (CartItem.Count > 0) { 
+            if (CartItem.Count > 0) {   
+                var neworder = new Order() { UserName = currentUsername, RestaurantID = cart.RestaurantID, RatingDone = false };
+                _context.Order.Add(neworder);
                 foreach(CartItem items in CartItem)
                 {
+                    var orderitem = new OrderItem() { OrderID = neworder.OrderID, Quantity = items.Quantity, FoodID = items.FoodID };
+                    _context.OrderItems.Add(orderitem);
                     _context.CartItems.Remove(items);
                 }
 
