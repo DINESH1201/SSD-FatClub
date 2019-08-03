@@ -88,6 +88,15 @@ namespace FatClub.Pages.Roles
 
             IdentityResult roleResult = await _userManager.AddToRoleAsync(AppUser, AppRole.Name);
 
+            var auditrecord = new AuditLog();
+            auditrecord.AuditActionType = "User Role Updated";
+            auditrecord.DateTimeStamp = DateTime.Now;
+            auditrecord.Description = String.Format("{0} has a {1} role.", AppUser, AppRole.Name);
+            var userID = User.Identity.Name.ToString();
+            auditrecord.Username = userID;
+            _context.AuditLogs.Add(auditrecord);
+            await _context.SaveChangesAsync();
+
             if (roleResult.Succeeded)
             {
                 TempData["message"] = "Role added to this user successfully";

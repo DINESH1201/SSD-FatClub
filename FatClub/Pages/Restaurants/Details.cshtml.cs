@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FatClub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Web;
 
 namespace FatClub.Pages.Restaurants
 {
@@ -23,7 +24,7 @@ namespace FatClub.Pages.Restaurants
 
         public Restaurant Restaurant { get; set; }
         public IList<Food> Food { get; set; }
-        public bool MsgBoxString { get; set; }
+        public string MsgBoxString { get; set; }
        // public async Task<IActionResult> OnGetAddToCart(int FoodID)
         //{
 
@@ -57,15 +58,15 @@ namespace FatClub.Pages.Restaurants
                 cartItem.Quantity = Convert.ToInt32(n);
                 cartItem.ShoppingCartID = cart.ShoppingCartID;
                 _context.CartItems.Add(cartItem);
-                MsgBoxString = true;//"Your food as been added to the cart";
+                MsgBoxString = "Your food as been added to the cart";
             }
             else
             {
-                MsgBoxString = false; //"You can only order food from 1 restaurant. Sorry for the inconvenience";
+                MsgBoxString = "You can only order food from 1 restaurant. Sorry for the inconvenience";
                 
                 
             }
-
+            ViewData["output"] = MsgBoxString;
 
             await _context.SaveChangesAsync();
             
@@ -90,7 +91,6 @@ namespace FatClub.Pages.Restaurants
             foodlist = foodlist.Where(r => r.RestaurantID == id);
             // Food = await _context.Food.
             Food = await foodlist.ToListAsync();
-
 
             return Page();
         }

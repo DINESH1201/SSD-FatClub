@@ -38,7 +38,7 @@ namespace FatClub.Areas.Identity.Pages.Account
 
             if (roleResult.Succeeded)
             {
-                 return Page();
+                 // return Page();
             }
             if (!result.Succeeded)
             {

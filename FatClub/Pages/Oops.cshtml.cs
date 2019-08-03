@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Web;
+using System.Net;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace FatClub.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class ErrorModel : PageModel
+    public class OopsModel : PageModel
     {
         public string RequestId { get; set; }
 
@@ -19,7 +21,7 @@ namespace FatClub.Pages
         public int iStatusCode { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
-        
+
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
@@ -27,14 +29,12 @@ namespace FatClub.Pages
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
 
-            
+
             // Get the details of the exception that occurred
-            var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             iStatusCode = Response.StatusCode;
-            Message = exception.Error.Message;
-            StackTrace = exception.Error.StackTrace;
-            
+            //StackTrace = exception.Error.StackTrace;
+
 
         }
     }
