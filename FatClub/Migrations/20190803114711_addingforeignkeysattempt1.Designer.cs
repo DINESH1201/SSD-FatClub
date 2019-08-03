@@ -4,14 +4,16 @@ using FatClub.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FatClub.Migrations
 {
     [DbContext(typeof(FatClubContext))]
-    partial class FatClubContextModelSnapshot : ModelSnapshot
+    [Migration("20190803114711_addingforeignkeysattempt1")]
+    partial class addingforeignkeysattempt1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,6 +85,8 @@ namespace FatClub.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<int?>("OrderID");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -90,6 +94,8 @@ namespace FatClub.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<int?>("ShoppingCartID");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -105,6 +111,10 @@ namespace FatClub.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ShoppingCartID");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -350,6 +360,17 @@ namespace FatClub.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FatClub.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("FatClub.Models.Order", "order")
+                        .WithMany()
+                        .HasForeignKey("OrderID");
+
+                    b.HasOne("FatClub.Models.ShoppingCart", "shoppingCart")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartID");
                 });
 
             modelBuilder.Entity("FatClub.Models.CartItem", b =>

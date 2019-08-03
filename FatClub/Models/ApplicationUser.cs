@@ -14,9 +14,9 @@ namespace FatClub.Models
         public string FirstName { get; set; }
         [StringLength(50)]
         public string LastName { get; set; }
-
+        
         public int? LatestOrder { get; set; }
-
+        
     }
 
 }

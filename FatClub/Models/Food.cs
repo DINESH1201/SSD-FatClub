@@ -22,7 +22,10 @@ namespace FatClub.Models
         [Required]
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
-        
+
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
+
         public static implicit operator Food(List<Food> v)
         {
             throw new NotImplementedException();
