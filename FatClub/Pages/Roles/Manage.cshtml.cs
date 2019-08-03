@@ -120,6 +120,15 @@ namespace FatClub.Pages.Roles
             {
                 await _userManager.RemoveFromRoleAsync(user, delrolename);
 
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "User Role Deleted";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                auditrecord.Description = String.Format("{0} has been stripped of {1} role.", user, delrolename);
+                var userID = User.Identity.Name.ToString();
+                auditrecord.Username = userID;
+                _context.AuditLogs.Add(auditrecord);
+                await _context.SaveChangesAsync();
+
                 TempData["message"] = "Role removed from this user successfully";
             }
 
