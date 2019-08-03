@@ -90,7 +90,6 @@ namespace FatClub
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "FatClubCookie";
@@ -101,6 +100,7 @@ namespace FatClub
 
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(1200);
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.SlidingExpiration = true;
 
             });
