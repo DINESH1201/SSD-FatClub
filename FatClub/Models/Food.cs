@@ -15,7 +15,7 @@ namespace FatClub.Models
         [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Please enter a proper name. Ensure no special characters or numbers.")]
         public string Name { get; set; }
 
-        [RegularExpression(@"^[0-9]+(\.[0-9]{2})?$", ErrorMessage = "Price cannot have more than 2 decimal places")]
+        [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})?$", ErrorMessage = "Invalid price entered")]
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
