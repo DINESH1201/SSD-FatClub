@@ -4,14 +4,16 @@ using FatClub.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FatClub.Migrations
 {
     [DbContext(typeof(FatClubContext))]
-    partial class FatClubContextModelSnapshot : ModelSnapshot
+    [Migration("20190803063421_OrdernOrderItem")]
+    partial class OrdernOrderItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,44 +171,6 @@ namespace FatClub.Migrations
                     b.ToTable("Food");
                 });
 
-            modelBuilder.Entity("FatClub.Models.Order", b =>
-                {
-                    b.Property<int>("OrderID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("RatingDone");
-
-                    b.Property<int?>("RestaurantID")
-                        .IsRequired();
-
-                    b.Property<string>("UserName")
-                        .IsRequired();
-
-                    b.HasKey("OrderID");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("FatClub.Models.OrderItem", b =>
-                {
-                    b.Property<int>("OrderItemID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FoodID");
-
-                    b.Property<int>("OrderID");
-
-                    b.Property<int>("Quantity");
-
-                    b.HasKey("OrderItemID");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("OrderItems");
-                });
-
             modelBuilder.Entity("FatClub.Models.Rating", b =>
                 {
                     b.Property<int>("RatingID")
@@ -359,14 +323,6 @@ namespace FatClub.Migrations
                     b.HasOne("FatClub.Models.Restaurant")
                         .WithMany("Foods")
                         .HasForeignKey("RestaurantID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("FatClub.Models.OrderItem", b =>
-                {
-                    b.HasOne("FatClub.Models.Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
