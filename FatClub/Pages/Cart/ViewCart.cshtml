@@ -56,5 +56,20 @@
 </table>
 
 <body>
-    <a asp-page-handler="CheckOut" >Checkout</a>
+    <a asp-page-handler="CheckOut">Checkout</a>
 </body>
+<script type="text/javascript">
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+@if (ViewData.ContainsKey("output"))
+{
+
+    string str = ViewData["output"].ToString();
+    if (str == "no items")
+    {
+        <script type="text/javascript">alert("There are no food items in your cart for you to order. Please add food to your cart before checkout")</script>
+    }
+}

@@ -33,7 +33,7 @@ namespace FatClub.Pages.Cart
 
             await OnGetAsync();
 
-            return Page();
+            return null;
         }
 
         public async Task<IActionResult> OnGetCheckoutAsync()
@@ -42,23 +42,30 @@ namespace FatClub.Pages.Cart
             ShoppingCart cart = await _context.ShoppingCarts.FirstOrDefaultAsync(m => m.UserName == currentUsername);
             CartItem = await _context.CartItems.Where(item => item.ShoppingCartID == cart.ShoppingCartID).ToListAsync();
 
-            foreach(CartItem items in CartItem)
-            {
-                _context.CartItems.Remove(items);
+            if (CartItem.Count > 0) { 
+                foreach(CartItem items in CartItem)
+                {
+                    _context.CartItems.Remove(items);
+                }
+
+                var auditrecord = new AuditLog();
+                auditrecord.AuditActionType = "User has checked out";
+                auditrecord.DateTimeStamp = DateTime.Now;
+                var userID = User.Identity.Name.ToString();
+                auditrecord.Username = userID;
+                auditrecord.Description = String.Format("{0} has made an order.", userID);
+                _context.AuditLogs.Add(auditrecord);
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToPage("./Checkout");
             }
-
-            var auditrecord = new AuditLog();
-            auditrecord.AuditActionType = "User has checked out";
-            auditrecord.DateTimeStamp = DateTime.Now;
-            var userID = User.Identity.Name.ToString();
-            auditrecord.Username = userID;
-            auditrecord.Description = String.Format("{0} has made an order.", userID);
-            _context.AuditLogs.Add(auditrecord);
-
-            await _context.SaveChangesAsync();
-
-            
-            return RedirectToPage("./Checkout");
+            else
+            {
+                ViewData["output"] = "no items";
+                await OnGetAsync();
+                return null;
+            }
         }
 
 
