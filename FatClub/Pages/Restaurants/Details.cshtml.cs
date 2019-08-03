@@ -55,6 +55,11 @@ namespace FatClub.Pages.Restaurants
                 string n = String.Format("{0}", Request.Form[String.Format("quantity-{0}", FoodID)]);
                 var cartItem = new CartItem();
                 cartItem.FoodID = FoodID;
+                if(!Int32.TryParse(n, out int s))
+                {
+                    ViewData["output"] = "Invalid quantity";
+                    return await OnGetAsync(id);
+                }
                 cartItem.Quantity = Convert.ToInt32(n);
                 cartItem.ShoppingCartID = cart.ShoppingCartID;
                 _context.CartItems.Add(cartItem);
