@@ -64,11 +64,11 @@
                 <td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                     {
-                        <p>
-                            <a asp-page="./EditFood" asp-route-FoodID="@item.FoodID" asp-route-id="@item.RestaurantID">Edit</a> |
-                            <a asp-page="./DeleteFood" asp-route-FoodID="@item.FoodID" asp-route-id="@item.RestaurantID">Delete</a>
+                    <p>
+                        <!--<a asp-page="./EditFood" asp-route-FoodID="@item.FoodID" asp-route-id="@item.RestaurantID">Edit</a> |-->
+                        <a asp-page="./DeleteFood" asp-route-FoodID="@item.FoodID" asp-route-id="@item.RestaurantID">Delete</a>
 
-                        </p>
+                    </p>
                     }
                     <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Restaurant.RestaurantID" asp-route-FoodID="@item.FoodID" >
                         <input name="quantity-@item.FoodID" type="number" min="1" max="5" required value="1" />
