@@ -50,7 +50,7 @@ namespace FatClub.Pages.Cart
                 {
                     ViewData["output"] = "rated";
                 }
-
+            Response.Redirect("../Index");
         }
 
         
